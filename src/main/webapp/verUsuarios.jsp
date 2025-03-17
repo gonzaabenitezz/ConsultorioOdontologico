@@ -37,7 +37,7 @@
                         </tr>
                     </tfoot>
 
-                    <%
+                    <%                       
                         List<Usuario> listaUsuarios = (List) request.getSession().getAttribute("listaUsuarios"); //video 13 min 45.00. getSession va a traer la sesion, getAttribute va a traer de la sesion la listaUsuarios, (List) va a hacer el casteo para que se transforme en una lista y lo va a guardar en la lista listaUsuarios
                     %>
 
@@ -51,19 +51,19 @@
                             <td style="display: flex; width: 230px">
                                 <form name="eliminar" action="SvElimUsuarios" method="POST"> <!--esto es para mandar el codigo al servlet-->
                                     <button type="submit" class="btn btn-primary btn-user btn-block" style="background-color: red; margin-right:5px;">
-                                        <i class="fas fa-trash-alt"></i>> Eliminar
+                                        <i class="fas fa-trash-alt"></i> Eliminar
                                     </button>
                                     <input type="hidden" name="id" value="<%=usu.getId_usuario()%>">
                                 </form>
                                 <form name="editar" action="SvEditUsuarios" method="GET"> <!--esto es para mandar el codigo al servlet-->
                                     <button type="submit" class="btn btn-primary btn-user btn-block" style="margin-left: 5px">
-                                        <i class="fas fa-pencil-alt"></i>> Editar
+                                        <i class="fas fa-pencil-alt"></i> Editar
                                     </button>
                                     <input type="hidden" name="id" value="<%=usu.getId_usuario()%>">
                                 </form>
                             </td>
                         </tr>
-                        </tr>>
+                        </tr>
                         <%}%>
                     </tbody>
                 </table>

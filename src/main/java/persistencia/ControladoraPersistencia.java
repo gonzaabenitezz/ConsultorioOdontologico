@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import logica.Paciente;
 import logica.Usuario;
 import persistencia.exceptions.NonexistentEntityException;
 
@@ -44,6 +45,34 @@ public class ControladoraPersistencia {
     public void editarUsuario(Usuario usu) {
         try {
             usuJPA.edit(usu);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void crearPaciente(Paciente pas) {
+        pacJPA.create(pas);
+    }
+
+    public List<Paciente> getPacientes() {
+        return pacJPA.findPacienteEntities();
+    }
+
+    public void borrarPaciente(int id) {
+        try {
+            pacJPA.destroy(id);
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public Paciente traerPaciente(int id) {
+        return pacJPA.findPaciente(id);
+    }
+
+    public void editarPaciente(Paciente pas) {
+        try {
+            pacJPA.edit(pas);
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -14,43 +14,43 @@ import logica.Usuario;
 
 @WebServlet(name = "SvUsuarios", urlPatterns = {"/SvUsuarios"})
 public class SvUsuarios extends HttpServlet {
-    
+
     Controladora control = new Controladora();
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
     }
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         List<Usuario> listaUsuarios = new ArrayList<Usuario>();
-        
+
         listaUsuarios = control.getUsuarios(); //listaUsuarios almacena el resultado de control.getUsuarios
-        
+
         HttpSession misession = request.getSession();
         misession.setAttribute("listaUsuarios", listaUsuarios); // el name "listaUsuarios" es una especie de alias. Esto hace que despues de que listaUsuarios se guarde (linea 30), esa misma lista se guardara como un atributo de session, eso hace que por mas que estemos fuera del servlet u otra cosa, realizara de igual manera la consulta
-        
+
         response.sendRedirect("verUsuarios.jsp");
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         String nombreUsuario = request.getParameter("nombreusu");
         String contra = request.getParameter("contrasenia");
         String rol = request.getParameter("rol");
-        
+
         control.crearUsuario(nombreUsuario, contra, rol);
-        
+
         response.sendRedirect("index.jsp");
     }
-    
+
     @Override
     public String getServletInfo() {
         return "Short description";
     }
-    
+
 }

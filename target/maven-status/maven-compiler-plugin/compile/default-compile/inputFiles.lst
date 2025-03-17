@@ -7,6 +7,7 @@ C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\persistencia\Usua
 C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\persistencia\HorarioJpaController.java
 C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\persistencia\PacienteJpaController.java
 C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\servlets\SvLogin.java
+C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\servlets\SvEditPacientes.java
 C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\logica\Horario.java
 C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\logica\Turno.java
 C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\persistencia\exceptions\IllegalOrphanException.java
@@ -15,11 +16,13 @@ C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\servlets\SvEditUs
 C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\logica\Controladora.java
 C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\persistencia\ControladoraPersistencia.java
 C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\persistencia\PersonaJpaController.java
+C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\servlets\SvElimPacientes.java
 C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\logica\Odontologo.java
 C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\persistencia\exceptions\PreexistingEntityException.java
 C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\logica\Responsable.java
 C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\logica\Usuario.java
 C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\persistencia\SecretarioJpaController.java
 C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\persistencia\exceptions\NonexistentEntityException.java
+C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\servlets\SvPacientes.java
 C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\logica\Secretario.java
 C:\Users\Usuario\Desktop\ConsultorioOdontologico\src\main\java\servlets\SvElimUsuarios.java
