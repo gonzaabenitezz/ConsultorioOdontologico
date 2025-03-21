@@ -1,10 +1,11 @@
 package persistencia;
 
-import java.util.ArrayList;
+//import java.util.ArrayList; si no anda es por esto 13.57 21.03.2025
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import logica.Paciente;
+import logica.Responsable;
 import logica.Usuario;
 import persistencia.exceptions.NonexistentEntityException;
 
@@ -77,5 +78,33 @@ public class ControladoraPersistencia {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void crearResponsable(Responsable resp) {
+        resJPA.create(resp);
+    }
+
+    public Responsable traerResponsable(int idRes) {
+        return resJPA.findResponsable(idRes);
+    }
+
+    public void editarResponsable(Responsable resp) {   //   SvEditarPacientes/controladora
+        try {
+            resJPA.edit(resp);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void borrarResponsable(int idresp) {
+        try {
+            resJPA.destroy(idresp);
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+
+
+
 
 }

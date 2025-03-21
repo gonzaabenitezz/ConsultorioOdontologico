@@ -53,9 +53,26 @@ public class Controladora {
         return ingreso;
     }
 
-    public void crearPaciente(String dni, String nombre, String apellido, String telefono, String direccion,
-            Date fechaNac, boolean tieneOS, String tipoSangre, String responsable) {
+    public void crearPacienteYResponsable(String dni, String nombre, String apellido, String telefono, String direccion,
+            Date fechaNac, boolean tieneOS, String tipoSangre, String dniRes, String nombreRes, String apellidoRes,
+            String telefonoRes, String direccionRes, Date fechaNacRes, String tipoRes) {
+
         Paciente pas = new Paciente();
+
+        if (dniRes != null && !dniRes.isEmpty()) {
+            Responsable resp = new Responsable();
+            resp.setDni(dniRes);
+            resp.setNombre(nombreRes);
+            resp.setApellido(apellidoRes);
+            resp.setTelefono(telefonoRes);
+            resp.setDireccion(direccionRes);
+            resp.setFecha_nac(fechaNacRes);
+            resp.setTipo_resp(tipoRes);
+
+            controlPersis.crearResponsable(resp);
+            pas.setUnResponsable(resp);
+        }
+
         pas.setDni(dni);
         pas.setNombre(nombre);
         pas.setApellido(apellido);
@@ -64,11 +81,10 @@ public class Controladora {
         pas.setFecha_nac(fechaNac);
         pas.setTiene_OS(tieneOS);
         pas.setTipoSangre(tipoSangre);
-        pas.getUnResponsable();
-
+        
         controlPersis.crearPaciente(pas);
     }
-
+    
     public List<Paciente> getPacientes() {
         return controlPersis.getPacientes();
     }
@@ -85,4 +101,17 @@ public class Controladora {
         controlPersis.editarPaciente(pas);
     }
 
+    public Responsable traerResponsable(int idRes) {
+        return controlPersis.traerResponsable(idRes);
+    }
+
+    public void editarResponsable(Responsable resp) {
+        controlPersis.editarResponsable(resp);
+    }
+
+    public void borrarResponsable(int idresp) {
+        controlPersis.borrarResponsable(idresp);
+    }
+
+    
 }

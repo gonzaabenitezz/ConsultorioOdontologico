@@ -1,3 +1,4 @@
+<%@page import="logica.Responsable"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="logica.Paciente"%>
 <%@page import="java.util.List"%>
@@ -32,6 +33,15 @@
                             <th>Fecha de Nacimiento</th>
                             <th>Obra Social</th>
                             <th>Tipo de Sangre</th>
+                            <th>Id Res</th>
+                            <th>Dni Res</th>
+                            <th>Nombre Res</th>
+                            <th>Apellido Res</th>
+                            <th>Telefono Res</th>
+                            <th>Dirección Res</th>
+                            <th>Fecha de Nacimiento Res</th>
+                            <th>Tipo Res</th>
+
                             <th style="width:210px">Acción</th>
                         </tr>
                     </thead>
@@ -46,6 +56,14 @@
                             <th>Fecha de Nacimiento</th>
                             <th>Obra Social</th>
                             <th>Tipo de Sangre</th>
+                            <th>Id Res</th>
+                            <th>Dni Res</th>
+                            <th>Nombre Res</th>
+                            <th>Apellido Res</th>
+                            <th>Telefono Res</th>
+                            <th>Dirección Res</th>
+                            <th>Fecha de Nacimiento Res</th>
+                            <th>Tipo Res</th>
                             <th style="width:210px">Acción</th>
                         </tr>
                     </tfoot>
@@ -59,9 +77,10 @@
 
                     <tbody>
                         <%for (Paciente pac : listaPacientes) {%>
-                        
+                        <%Responsable resp = pac.getUnResponsable();%>
                         <% String tieneOSString = (pac.isTiene_OS()) ? "Si" : "No"; %> <!-- pasar boolean a string-->
                         <%String fechaFormateada = formatter.format(pac.getFecha_nac());%> <!-- formatear fecha -->
+                        <%String fechaFormateadaRes = (resp != null) ? formatter.format(resp.getFecha_nac()) : "N/A";%>
 
                         <tr>
                             <td id="id_pac<%= pac.getId()%>"> <%= pac.getId()%> </td>  <!--Esta parte del codigo <,%= %,> lo que hace es traer el valor exacto de una variable sin que tengamos que especificar algo mas de codigo --> 
@@ -72,7 +91,15 @@
                             <td> <%= pac.getDireccion()%> </td> 
                             <td> <%= fechaFormateada%> </td> <!-- Si la fecha u otro dato que se formaté o se le realiza un cambio puede tener un error -->
                             <td> <%= tieneOSString%> </td> 
-                            <td> <%= pac.getTipoSangre()%> </td>
+                            <td> <%= pac.getTipoSangre()%> </td>                         
+                            <td idresp="id_resp<%= (resp != null) ? resp.getId() : "N/A"%>"> <%= (resp != null) ? resp.getId() : "N/A"%> </td> <!-- mientras idresp no devuelva null, mostrara la id del responsable -->
+                            <td><%= (resp != null) ? resp.getDni() : "N/A"%></td>
+                            <td><%= (resp != null) ? resp.getNombre() : "N/A"%></td>
+                            <td><%= (resp != null) ? resp.getApellido() : "N/A"%></td>
+                            <td> <%= (resp != null) ? resp.getTelefono() : "N/A"%> </td>
+                            <td> <%= (resp != null) ? resp.getDireccion() : "N/A"%> </td> 
+                            <td> <%= fechaFormateadaRes%> </td> <!-- Si la fecha u otro dato que se formaté o se le realiza un cambio puede tener un error -->
+                            <td> <%= (resp != null) ? resp.getTipo_resp() : "N/A"%> </td>
 
 
 
@@ -81,7 +108,8 @@
                                     <button type="submit" class="btn btn-primary btn-user btn-block" style="background-color: red; margin-right:5px;">
                                         <i class="fas fa-trash-alt"></i> Eliminar
                                     </button>
-                                    <input type="hidden" name="id" value="<%=pac.getId()%>">
+                                    <input type="hidden" name="id" value="<%=pac.getId()%>"> <!-- esto se conecta con el POST de SvelimPacientes para poder eliminar al paciente con esta id-->
+                                    <input type="hidden" name="idresp" value="<%= (resp != null) ? resp.getId() : "" %>"> <!-- si idresp es null devuelve un valor vacio, si no, devuelve la id del responsable. Esto se conecta con el POST de SvelimPacientes para poder eliminar al responsable con esta id -->
                                 </form>
                                 <form name="editar" action="SvEditPacientes" method="GET"> <!--esto es para mandar el codigo al servlet-->
                                     <button type="submit" class="btn btn-primary btn-user btn-block" style="margin-left: 5px">
@@ -90,8 +118,7 @@
                                     <input type="hidden" name="id" value="<%=pac.getId()%>">
                                 </form>
                             </td>
-                        </tr>
-                        </tr>
+                        </tr>                        
                         <%}%>
                     </tbody>
                 </table>

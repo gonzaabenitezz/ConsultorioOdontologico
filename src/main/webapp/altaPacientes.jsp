@@ -83,6 +83,11 @@
             <input type="date" class="form-control form-control-user" id="fechaNac" name="fechaNacRes"
                    placeholder="Fecha Nacimiento">
         </div>
+        <div class="col-sm-6 mb-3">
+            <label for="dnires">Tipo de Responsable:</label>
+            <input type="text" class="form-control form-control-user" id="tipo_resp" name="tipo_respRes"
+                   placeholder="Tipo de Responsable">
+        </div>
     </div>
 
 

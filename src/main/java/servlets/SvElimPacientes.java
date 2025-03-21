@@ -1,7 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,7 +30,12 @@ public class SvElimPacientes extends HttpServlet {
 
         int id = Integer.parseInt(request.getParameter("id"));
 
-        control.borrarPaciente(id);
+        String idrespParam = request.getParameter("idresp");
+        control.borrarPaciente(id); //debe ir primero esto xq si se trata de borrar primero el responsable se eliminaria la union por la clave foranea que esta en el paciente (unResponsable) y eso daria error
+        if(idrespParam != null && !idrespParam.isEmpty()){
+            int idresp = Integer.parseInt(idrespParam);
+            control.borrarResponsable(idresp);
+        }
 
         response.sendRedirect("SvPacientes");
 
