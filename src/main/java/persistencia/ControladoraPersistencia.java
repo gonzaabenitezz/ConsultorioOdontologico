@@ -4,6 +4,7 @@ package persistencia;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import logica.Odontologo;
 import logica.Paciente;
 import logica.Responsable;
 import logica.Usuario;
@@ -84,7 +85,7 @@ public class ControladoraPersistencia {
     }
 
     public Responsable traerResponsable(int idRes) {
-        return resJPA.findResponsable(idRes);
+        return resJPA.findResponsable(idRes); //ESTO SE USA???
     }
 
     public void editarResponsable(Responsable resp) {   //   SvEditarPacientes/controladora
@@ -103,7 +104,33 @@ public class ControladoraPersistencia {
         }
     }
 
+    public void crearOdontologo(Odontologo odon) {
+        odontoJPA.create(odon);
+    }
 
+    public List<Odontologo> getOdontologos() {
+        return odontoJPA.findOdontologoEntities();
+    }
+
+    public void borrarOdontologo(int id) {
+        try {
+            odontoJPA.destroy(id);
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public Odontologo traerOdontologo(int id) {
+        return odontoJPA.findOdontologo(id);
+    }
+
+    public void editarOdontologo(Odontologo odon) {
+        try {
+            odontoJPA.edit(odon);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
 
 

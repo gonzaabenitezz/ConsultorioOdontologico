@@ -113,5 +113,38 @@ public class Controladora {
         controlPersis.borrarResponsable(idresp);
     }
 
+    public void crearOdontologo(String dniOdon, String nombreOdon, String apellidoOdon,
+            String telefonoOdon, String direccionOdon, Date fechaNacOdon, String especialidadOdon) {
+    
+        Odontologo odon = new Odontologo();
+        
+        odon.setDni(dniOdon);
+        odon.setNombre(nombreOdon);
+        odon.setApellido(apellidoOdon);
+        odon.setTelefono(telefonoOdon);
+        odon.setDireccion(direccionOdon);
+        odon.setFecha_nac(fechaNacOdon);
+        odon.setEspecialidad(especialidadOdon);
+        
+        controlPersis.crearOdontologo(odon);        
+         
+    }
+
+    public List<Odontologo> getOdontologos() {
+        return controlPersis.getOdontologos();
+    }
+
+    public void borrarOdontologo(int id) {
+        controlPersis.borrarOdontologo(id);
+    }
+
+    public Odontologo traerOdontologo(int id) {
+        return controlPersis.traerOdontologo(id);
+    }
+
+    public void editarOdontologo(Odontologo odon) {
+        controlPersis.editarOdontologo(odon);
+    }
+
     
 }
