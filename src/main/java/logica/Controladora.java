@@ -9,13 +9,15 @@ public class Controladora {
 
     ControladoraPersistencia controlPersis = new ControladoraPersistencia();
 
-    public void crearUsuario(String nombreUsuario, String contrasenia, String rol) {
+    public int crearUsuario(String nombreUsuario, String contrasenia, String rol) {
         Usuario usu = new Usuario(); // se deja vacio los corchetes para que se generen la id's automaticamente ya que no las tengo
         usu.setNombreUsuario(nombreUsuario);
         usu.setContrasenia(contrasenia);
         usu.setRol(rol);
 
         controlPersis.crearUsuario(usu);
+        return usu.getId_usuario();
+        
     }
 
     public List<Usuario> getUsuarios() {
@@ -144,6 +146,38 @@ public class Controladora {
 
     public void editarOdontologo(Odontologo odon) {
         controlPersis.editarOdontologo(odon);
+    }
+
+    public void crearSecretario(String dni, String nombre, String apellido, String telefono, String direccion, Date fechaNac, String sector, int unUsuario) {
+        Secretario secre = new Secretario();
+        
+        secre.setDni(dni);
+        secre.setNombre(nombre);
+        secre.setApellido(apellido);
+        secre.setTelefono(telefono);
+        secre.setDireccion(direccion);
+        secre.setFecha_nac(fechaNac);
+        secre.setSector(sector);
+        secre.setUnUsuario(traerUsuario(unUsuario));
+        //System.out.println(" ----------------------------------------- ID DEL USUARIO desde la CONTROLADORA " + unUsuario);
+        
+        controlPersis.crearSecretario(secre);
+    }
+
+    public List<Secretario> getSecretarios() {
+        return controlPersis.getSecretarios();
+    }
+
+    public void borrarSecretario(int id) {
+        controlPersis.borrarSecretario(id);
+    }
+
+    public Secretario traerSecretario(int id) {
+        return controlPersis.traerSecretario(id);
+    }
+
+    public void editarSecretario(Secretario secre) {
+        controlPersis.editarSecretario(secre);
     }
 
     

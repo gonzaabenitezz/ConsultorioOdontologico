@@ -43,8 +43,11 @@ public class SvUsuarios extends HttpServlet {
         String contra = request.getParameter("contrasenia");
         String rol = request.getParameter("rol");
 
-        control.crearUsuario(nombreUsuario, contra, rol);
-
+        int id_usuario  = control.crearUsuario(nombreUsuario, contra, rol);
+        
+        HttpSession idsession = request.getSession();
+        idsession.setAttribute("id_usuario", id_usuario);
+        
         response.sendRedirect("index.jsp");
     }
 

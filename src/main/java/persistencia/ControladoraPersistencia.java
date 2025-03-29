@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import logica.Odontologo;
 import logica.Paciente;
 import logica.Responsable;
+import logica.Secretario;
 import logica.Usuario;
 import persistencia.exceptions.NonexistentEntityException;
 
@@ -24,8 +25,10 @@ public class ControladoraPersistencia {
     public ControladoraPersistencia() {
     }
 
-    public void crearUsuario(Usuario usu) {
+    public int crearUsuario(Usuario usu) {
         usuJPA.create(usu);
+        return usu.getId_usuario();
+        
     }
 
     public List<Usuario> getUsuarios() {
@@ -127,6 +130,34 @@ public class ControladoraPersistencia {
     public void editarOdontologo(Odontologo odon) {
         try {
             odontoJPA.edit(odon);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void crearSecretario(Secretario secre) {
+        secreJPA.create(secre);
+    }
+
+    public List<Secretario> getSecretarios() {
+        return secreJPA.findSecretarioEntities();
+    }
+
+    public void borrarSecretario(int id) {
+        try {
+            secreJPA.destroy(id);
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public Secretario traerSecretario(int id) {
+        return secreJPA.findSecretario(id);
+    }
+
+    public void editarSecretario(Secretario secre) {
+        try {
+            secreJPA.edit(secre);
         } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }

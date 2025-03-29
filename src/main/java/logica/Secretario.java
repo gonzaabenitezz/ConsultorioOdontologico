@@ -49,7 +49,7 @@ public class Secretario extends Persona{
     public void setUnUsuario(Usuario unUsuario) {
         this.unUsuario = unUsuario;
     }
-    
-    
+
+
     
 }
