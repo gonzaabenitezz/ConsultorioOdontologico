@@ -43,10 +43,20 @@
             <input type="text" class="form-control form-control-user" id="especialidad" name="especialidadOdon"
                    placeholder="Especialidad">
         </div> 
-        <!-- Aca va a ir todo lo que respecta a horario y usuarios -->
+        <!-- Sector de Horario-->
+        <div class="col-sm-6 mb-3">
+            <label for="dniodon">Inicio de Horario</label> 
+            <input type="time" class="form-control form-control-user" id="inicioHor" name="inicioHorOdon"
+                   placeholder="Inicio de Horario" min="07:00" step="1800"> <!-- min es el horario minimo que se puede colocar y step es un rango de 30 minutos que se debe coloar -->
+        </div>
+        <div class="col-sm-6 mb-3">
+            <label for="dniodon">Fin de Horario</label>
+            <input type="time" class="form-control form-control-user" id="finHor" name="finHorOdon"
+                   placeholder="Fin de Horario" max="22:00" step="1800"><!-- max es el horario maximo que se puede colocar y step es un rango de 30 minutos que se debe coloar -->
+        </div> 
     </div>
 
-    <button class="btn btn-primary btn-user btn-block" type="submit"> <!-- solo agregue el type="submit" -->
+    <button class="btn btn-primary btn-user btn-block" type="submit"> 
         Crear Odontólogo
     </button>
 </form>

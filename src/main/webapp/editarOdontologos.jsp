@@ -1,16 +1,20 @@
+<%@page import="java.util.List"%>
+<%@page import="logica.Horario"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="logica.Odontologo"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>  
 <%@include file="components/header.jsp" %>
 <%@include file="components/bodyprimeraparte.jsp" %>
 
-    <h1>Editar Odontólogos</h1>
+<h1>Editar Odontólogos</h1>
 <p>Este es el apartado para editar a los odontologos del sistema.</p>
 
 <% Odontologo odon = (Odontologo) request.getSession().getAttribute("odonEditar"); %>
+<%Horario hor = (Horario) request.getSession().getAttribute("horEditar"); %>
 
-<% SimpleDateFormat formatter  = new SimpleDateFormat("yyyy-MM-dd");%>
-<% String fechaFormateada = formatter.format(odon.getFecha_nac()); %>
+
+<% SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");%>
+<% String fechaFormateada = formatter.format(odon.getFecha_nac());%>
 
 
 <p>Odontologo</p>
@@ -51,7 +55,17 @@
             <input type="text" class="form-control form-control-user" id="especialidad" name="especialidadOdon"
                    placeholder="Especialidad" value="<%=odon.getEspecialidad()%>">
         </div> 
-        <!-- Aca va a ir todo lo que respecta a horario y usuarios -->
+        <!-- Sector de Horario -->
+        <div class="col-sm-6 mb-3">
+            <label for="dniodon">Inicio de Horario</label> 
+            <input type="time" class="form-control form-control-user" id="inicioHor" name="inicioHorOdon"
+                   placeholder="Inicio de Horario" value="<%= hor.getHorario_inicio()%>">
+        </div>
+        <div class="col-sm-6 mb-3">
+            <label for="dniodon">Fin de Horario</label>
+            <input type="time" class="form-control form-control-user" id="finHor" name="finHorOdon"
+                   placeholder="Fin de Horario" value="<%= hor.getHorario_fin()%>">
+        </div> 
     </div>
 
     <button class="btn btn-primary btn-user btn-block" type="submit"> <!-- solo agregue el type="submit" -->

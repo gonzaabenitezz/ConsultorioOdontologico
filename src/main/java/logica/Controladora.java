@@ -116,7 +116,7 @@ public class Controladora {
     }
 
     public void crearOdontologo(String dniOdon, String nombreOdon, String apellidoOdon,
-            String telefonoOdon, String direccionOdon, Date fechaNacOdon, String especialidadOdon) {
+            String telefonoOdon, String direccionOdon, Date fechaNacOdon, String especialidadOdon, int unUsuario, int unHorario) {
     
         Odontologo odon = new Odontologo();
         
@@ -127,7 +127,9 @@ public class Controladora {
         odon.setDireccion(direccionOdon);
         odon.setFecha_nac(fechaNacOdon);
         odon.setEspecialidad(especialidadOdon);
-        
+        odon.setUnUsuario(traerUsuario(unUsuario));
+        odon.setUnHorario(traerHorario(unHorario));
+
         controlPersis.crearOdontologo(odon);        
          
     }
@@ -180,5 +182,28 @@ public class Controladora {
         controlPersis.editarSecretario(secre);
     }
 
-    
+    public int crearHorario(String inicioHorarioOdon, String finHorarioOdon) {
+        Horario hor = new Horario();
+        hor.setHorario_inicio(inicioHorarioOdon);
+        hor.setHorario_fin(finHorarioOdon);
+        
+        controlPersis.crearHorario(hor);
+        return hor.getId_horario();
+    }
+
+    public Horario traerHorario (int idHor){
+        return controlPersis.traerHorario(idHor);
+    }
+
+    public List<Horario> getHorarios() {
+        return controlPersis.getHorarios();
+    }
+
+    public void editarHorarios(Horario hor) {
+        controlPersis.editarHorarios(hor);
+    }
+
+    public void borrarHorario(Integer id) {
+        controlPersis.borrarHorario(id);
+    }
 }

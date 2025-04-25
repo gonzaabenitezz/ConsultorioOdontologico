@@ -4,6 +4,7 @@ package persistencia;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import logica.Horario;
 import logica.Odontologo;
 import logica.Paciente;
 import logica.Responsable;
@@ -159,6 +160,35 @@ public class ControladoraPersistencia {
         try {
             secreJPA.edit(secre);
         } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public int crearHorario(Horario hor) {
+        horaJPA.create(hor);
+        return hor.getId_horario();
+    }
+
+    public Horario traerHorario(int idHor) {
+        return horaJPA.findHorario(idHor);
+    }
+
+    public List<Horario> getHorarios() {
+        return horaJPA.findHorarioEntities();
+    }
+
+    public void editarHorarios(Horario hor) {
+        try {
+            horaJPA.edit(hor);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void borrarHorario(Integer id) {
+        try {
+            horaJPA.destroy(id);
+        } catch (NonexistentEntityException ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
