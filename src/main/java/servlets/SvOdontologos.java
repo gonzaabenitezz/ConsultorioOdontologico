@@ -1,7 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-//import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import logica.Controladora;
+import logica.Horario;
 import logica.Odontologo;
 
 @WebServlet(name = "SvOdontologos", urlPatterns = {"/SvOdontologos"})
@@ -34,17 +34,51 @@ public class SvOdontologos extends HttpServlet {
 
         List<Odontologo> listaOdontologos = new ArrayList<Odontologo>();
         listaOdontologos = control.getOdontologos();
-        
+
         HttpSession misession = request.getSession();
         misession.setAttribute("listaOdontologos", listaOdontologos);
-        
+
+        List<Horario> listaHorarios = new ArrayList<Horario>();
+        listaHorarios = control.getHorarios();
+        misession.setAttribute("listaHorarios", listaHorarios);
+
         response.sendRedirect("verOdontologos.jsp");
-        
+
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        int unUsuario = (int) request.getSession().getAttribute("id_usuario");
+
+        try {
+
+            //Horario
+            HttpSession sessionHorario = request.getSession();
+
+            //Procesar horario
+            String inicioHorOdon = request.getParameter("inicioHorOdon");
+            String finHorOdon = request.getParameter("finHorOdon");
+
+            if (inicioHorOdon == null || inicioHorOdon.trim().isEmpty()) {
+                throw new ServletException("Horario de inicio no proporcionado");
+            }
+
+            if (finHorOdon == null || finHorOdon.trim().isEmpty()) {
+                throw new ServletException("Fin de horario no proporcionado");
+            }
+
+            //Guardar horario en session y redirigir a SvHorarios
+            sessionHorario.setAttribute("inicioHorario", inicioHorOdon);
+            sessionHorario.setAttribute("finHorario", finHorOdon);
+            request.getRequestDispatcher("SvHorarios").forward(request, response);
+
+        } catch (Exception e) {
+            throw new ServletException("Error al procesar horario: " + e.getMessage(), e);
+        }
+
+        int unHorario = (int) request.getSession().getAttribute("id_horario");
 
         String dniOdon = request.getParameter("dniOdon");
         String nombreOdon = request.getParameter("nombreOdon");
@@ -54,6 +88,7 @@ public class SvOdontologos extends HttpServlet {
         String fechaNacStringOdon = request.getParameter("fechaNacOdon");
         String especialidadOdon = request.getParameter("especialidadOdon");
 
+        //Resto de valores del Odontologo
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date fechaNacOdon = null;
 
@@ -63,9 +98,7 @@ public class SvOdontologos extends HttpServlet {
             Logger.getLogger(SvPacientes.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        control.crearOdontologo(dniOdon, nombreOdon, apellidoOdon, telefonoOdon, direccionOdon, fechaNacOdon, especialidadOdon);
-
-        response.sendRedirect("index.jsp");
+        control.crearOdontologo(dniOdon, nombreOdon, apellidoOdon, telefonoOdon, direccionOdon, fechaNacOdon, especialidadOdon, unUsuario, unHorario);
 
     }
 

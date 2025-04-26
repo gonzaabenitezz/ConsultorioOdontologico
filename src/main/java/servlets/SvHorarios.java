@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import logica.Controladora;
 
-@WebServlet(name = "SvElimUsuarios", urlPatterns = {"/SvElimUsuarios"})
-public class SvElimUsuarios extends HttpServlet {
+@WebServlet(name = "SvHorarios", urlPatterns = {"/SvHorarios"})
+public class SvHorarios extends HttpServlet {
 
     Controladora control = new Controladora();
 
@@ -28,31 +28,33 @@ public class SvElimUsuarios extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // 1. Obtener sesión de odontólogo
-        HttpSession sessionOdonto = request.getSession(false); // false = no crear nueva sesión
 
         try {
 
-            if (sessionOdonto == null) {
-                throw new ServletException("No hay sessión activa");
+            HttpSession sessionHorario = request.getSession(false);
+
+            if (sessionHorario == null) {
+                throw new ServletException("No hay session activa");
             }
 
-            // 2. Obtener atributo de sesión
-            Integer id = (Integer) sessionOdonto.getAttribute("idUsuarioEliminar");
-            //Integer idhor = (Integer) sessionOdonto.getAttribute("idHorarioEliminar");
+            String inicioHorarioOdon = (String) sessionHorario.getAttribute("inicioHorario");
+            String finHorarioOdon = (String) sessionHorario.getAttribute("finHorario");
 
-            if (id == null) {
-                throw new ServletException("No se encontró ID de usuario en la sessión");
+            if (inicioHorarioOdon == null) {
+                throw new ServletException("No se encontro el horario de inicio");
+            }
+            if (finHorarioOdon == null) {
+                throw new ServletException("No se encontro el fin del horario");
             }
 
-            // 3. Limpiar la sesión, ahora no xq sino se elimina la id de horario
-            sessionOdonto.removeAttribute("idUsuarioEliminar");
+            int id_horario = control.crearHorario(inicioHorarioOdon, finHorarioOdon);
 
-            // 4. Procesar la eliminación
-            control.borrarUsuario(id);
+            sessionHorario.setAttribute("id_horario", id_horario);
 
-            // 5. Redirigir
-            request.getRequestDispatcher("SvElimHorarios").forward(request, response);
+            sessionHorario.removeAttribute("inicioHorario");
+            sessionHorario.removeAttribute("finHorario");
+
+            response.sendRedirect("SvOdontologos");
 
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, e.getMessage());
