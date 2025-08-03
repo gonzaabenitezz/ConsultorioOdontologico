@@ -115,6 +115,4 @@
 
 </div>
 
-</div>
-
 <%@include file="components/bodyfinal.jsp" %>

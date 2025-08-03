@@ -17,7 +17,7 @@ public class Controladora {
 
         controlPersis.crearUsuario(usu);
         return usu.getId_usuario();
-        
+
     }
 
     public List<Usuario> getUsuarios() {
@@ -83,10 +83,10 @@ public class Controladora {
         pas.setFecha_nac(fechaNac);
         pas.setTiene_OS(tieneOS);
         pas.setTipoSangre(tipoSangre);
-        
+
         controlPersis.crearPaciente(pas);
     }
-    
+
     public List<Paciente> getPacientes() {
         return controlPersis.getPacientes();
     }
@@ -117,9 +117,9 @@ public class Controladora {
 
     public void crearOdontologo(String dniOdon, String nombreOdon, String apellidoOdon,
             String telefonoOdon, String direccionOdon, Date fechaNacOdon, String especialidadOdon, int unUsuario, int unHorario) {
-    
+
         Odontologo odon = new Odontologo();
-        
+
         odon.setDni(dniOdon);
         odon.setNombre(nombreOdon);
         odon.setApellido(apellidoOdon);
@@ -130,8 +130,8 @@ public class Controladora {
         odon.setUnUsuario(traerUsuario(unUsuario));
         odon.setUnHorario(traerHorario(unHorario));
 
-        controlPersis.crearOdontologo(odon);        
-         
+        controlPersis.crearOdontologo(odon);
+
     }
 
     public List<Odontologo> getOdontologos() {
@@ -152,7 +152,7 @@ public class Controladora {
 
     public void crearSecretario(String dni, String nombre, String apellido, String telefono, String direccion, Date fechaNac, String sector, int unUsuario) {
         Secretario secre = new Secretario();
-        
+
         secre.setDni(dni);
         secre.setNombre(nombre);
         secre.setApellido(apellido);
@@ -162,7 +162,7 @@ public class Controladora {
         secre.setSector(sector);
         secre.setUnUsuario(traerUsuario(unUsuario));
         //System.out.println(" ----------------------------------------- ID DEL USUARIO desde la CONTROLADORA " + unUsuario);
-        
+
         controlPersis.crearSecretario(secre);
     }
 
@@ -186,12 +186,12 @@ public class Controladora {
         Horario hor = new Horario();
         hor.setHorario_inicio(inicioHorarioOdon);
         hor.setHorario_fin(finHorarioOdon);
-        
+
         controlPersis.crearHorario(hor);
         return hor.getId_horario();
     }
 
-    public Horario traerHorario (int idHor){
+    public Horario traerHorario(int idHor) {
         return controlPersis.traerHorario(idHor);
     }
 
@@ -205,5 +205,38 @@ public class Controladora {
 
     public void borrarHorario(Integer id) {
         controlPersis.borrarHorario(id);
+    }
+
+    public void crearTurno(int idPaciente, int idOdontologo, Date fechaTurno, String horaTurno, String afeccion) {
+
+        Turno tur = new Turno();
+        Paciente pac = traerPaciente(idPaciente);
+        Odontologo odon = traerOdontologo(idOdontologo);
+        
+        tur.setPacien(pac);        
+        tur.setOdonto(odon);
+        tur.setFecha_turno(fechaTurno);
+        tur.setHora_turno(horaTurno);
+        tur.setAfeccion(afeccion);
+               
+        controlPersis.crearTurno(tur);
+    }
+
+    public List<Turno> getTurnos() {
+        
+        return controlPersis.getTurnos();
+
+    }
+
+    public void borrarTurno(int id) {
+        controlPersis.borrarTurno(id);
+    }
+
+    public Turno traerTurno(int id) {
+       return controlPersis.traerTurno(id);
+    }
+
+    public void editarTurno(Turno tur) {
+        controlPersis.editarTurno(tur);
     }
 }
