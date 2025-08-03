@@ -15,7 +15,7 @@ public class Paciente extends Persona implements Serializable{
     private String tipoSangre;
     @OneToOne
     private Responsable unResponsable;
-    @OneToMany(mappedBy = "pacien")  
+    @OneToMany(mappedBy = "pacien") //deben coincidir exactamente en los dos lados
     private List<Turno> listaTurnos;
     
     public Paciente() {

@@ -25,8 +25,8 @@ public class Turno implements Serializable {
     @JoinColumn(name = "id_odonto")  //explicacion video java web video 11 min 27.00
     private Odontologo odonto;    //explicacion video java web video 11 min 24.00
     @ManyToOne
-    @JoinColumn(name = "id_pacien")
-    private Paciente pacien;
+    @JoinColumn(name = "id_pacien") //nombre de la columna foránea en la base de datos
+    private Paciente pacien; //deben coincidir exactamente en los dos lados
 
     public Turno() {
     }
@@ -69,7 +69,21 @@ public class Turno implements Serializable {
     public void setAfeccion(String afeccion) {
         this.afeccion = afeccion;
     }
-    
-    
-    
+
+    public Odontologo getOdonto() {
+        return odonto;
+    }
+
+    public void setOdonto(Odontologo odonto) {
+        this.odonto = odonto;
+    }
+
+    public Paciente getPacien() {
+        return pacien;
+    }
+
+    public void setPacien(Paciente pacien) {
+        this.pacien = pacien;
+    }
+           
 }

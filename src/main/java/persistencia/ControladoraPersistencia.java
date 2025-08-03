@@ -9,6 +9,7 @@ import logica.Odontologo;
 import logica.Paciente;
 import logica.Responsable;
 import logica.Secretario;
+import logica.Turno;
 import logica.Usuario;
 import persistencia.exceptions.NonexistentEntityException;
 
@@ -189,6 +190,38 @@ public class ControladoraPersistencia {
         try {
             horaJPA.destroy(id);
         } catch (NonexistentEntityException ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void crearTurno(Turno tur) {
+        
+        turnJPA.create(tur);
+        
+    }
+
+    public List<Turno> getTurnos() {
+    
+        return turnJPA.findTurnoEntities();
+    
+    }
+
+    public void borrarTurno(int id) {
+        try {
+            turnJPA.destroy(id);
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public Turno traerTurno(int id) {
+        return turnJPA.findTurno(id);
+    }
+
+    public void editarTurno(Turno tur) {
+        try {
+            turnJPA.edit(tur);
+        } catch (Exception ex) {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
