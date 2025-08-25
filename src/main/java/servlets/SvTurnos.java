@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors; //????
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,22 +27,36 @@ public class SvTurnos extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<Turno> listaTurnos = new ArrayList<Turno>();
-        listaTurnos = control.getTurnos();
         HttpSession misession = request.getSession();
-        misession.setAttribute("listaTurnos", listaTurnos);
+        String rol = (String) request.getSession().getAttribute("rol"); //SvLogin
+
+        List<Turno> listaTurnos = new ArrayList<Turno>();
+
+        if ("odontologo".equalsIgnoreCase(rol)) {
+            int idOdon = (int) misession.getAttribute("id");
+
+            List<Turno> todosLosTurnos = control.getTurnos();
+            listaTurnos = todosLosTurnos.stream()
+                    .filter(t -> t.getOdonto().getId() == idOdon)
+                    .collect(Collectors.toList());
+            misession.setAttribute("listaTurnos", listaTurnos);
+
+        } else  {
+
+            listaTurnos = control.getTurnos();
+            misession.setAttribute("listaTurnos", listaTurnos);
+        }
 
         List<Odontologo> listaOdontologos = new ArrayList<Odontologo>();
         listaOdontologos = control.getOdontologos();
         misession.setAttribute("listaOdontologos", listaOdontologos);
-        
+
         List<Paciente> listaPacientes = new ArrayList<Paciente>();
         listaPacientes = control.getPacientes();
         misession.setAttribute("listaPacientes", listaPacientes);

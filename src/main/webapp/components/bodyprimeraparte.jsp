@@ -6,7 +6,7 @@
     <%
         HttpSession misession = request.getSession();
         String usuario = (String) request.getSession().getAttribute("usuario");  //vid 14 min40.00 expl. se trae el atributo usuario aca poruqe si aca no existe el atributo usuario significa que la persona no inicio sesion y eso se sabe xq en SvLogin.java se esblece que al atributo usuario se seteara solo si el usuario y contraseña son correctos (linea 40)
-    
+        String rol = (String) request.getSession().getAttribute("rol");
     if(usuario==null){
         response.sendRedirect("sinLogin.jsp");
         }
@@ -124,7 +124,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Acciones:</h6>
                         <a class="collapse-item" href="SvTurnos">Ver Turno</a>
-                        <a class="collapse-item" href="altaTurnos.jsp">Alta Turno</a>
+                        <a class="collapse-item" href="SvAltaTurnos">Alta Turno</a>
                     </div>
                 </div>
             </li>
@@ -160,7 +160,8 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=request.getSession().getAttribute("usuario")%></span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=request.getSession().getAttribute("usuario")%> - </span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%=request.getSession().getAttribute("rol")%></span>
                                 <img class="img-profile rounded-circle"
                                      src="img/undraw_profile.svg">
                             </a>
