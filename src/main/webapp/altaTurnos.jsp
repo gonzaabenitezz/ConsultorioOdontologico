@@ -73,22 +73,54 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% List<Odontologo> listaOdontologos = (List) request.getSession().getAttribute("listaOdontologos"); %>
-                                    <% if (listaOdontologos != null && !listaOdontologos.isEmpty()) { 
-                                        for (Odontologo odon : listaOdontologos) { %>
-                                            <tr>
-                                                <td><%= odon.getId() %></td>
-                                                <td><%= odon.getNombre() %></td>
-                                                <td><%= odon.getApellido() %></td>
-                                                <td><%= odon.getEspecialidad() %></td>
-                                                <td>
-                                                    <input type="radio" name="idOdontologo" value="<%= odon.getId() %>" required>
-                                                </td>
-                                            </tr>
-                                    <%  } 
-                                       } else { %>
-                                            <tr><td colspan="5" class="text-center">No hay odontólogos registrados</td></tr>
-                                    <% } %>
+                                    <%
+                                        String rolOdon = (String) misession.getAttribute("rol");
+                                        Integer idOdon = null;
+                                        if ("odontologo".equalsIgnoreCase(rolOdon)) {
+                                            idOdon = (Integer) misession.getAttribute("id"); // puede ser null si faltara
+                                        }
+                                        List<Odontologo> listaOdontologos = (List) request.getSession().getAttribute("listaOdontologos");
+
+                                        if (listaOdontologos != null && !listaOdontologos.isEmpty()) {
+
+                                            // Si es odontólogo, mostrar solo sus datos
+                                            if ("odontologo".equalsIgnoreCase(rolOdon)) {
+                                                for (Odontologo odon : listaOdontologos) {
+                                                    if (idOdon == odon.getId()) {
+                                    %>
+                                    <tr>
+                                        <td><%= odon.getId()%></td>
+                                        <td><%= odon.getNombre()%></td>
+                                        <td><%= odon.getApellido()%></td>
+                                        <td><%= odon.getEspecialidad()%></td>
+                                        <td>
+                                            <input type="radio" name="idOdontologo" value="<%= odon.getId()%>" required>
+                                        </td>
+                                    </tr>
+                                    <%
+                                                break; // detenerse después de mostrar su propio registro
+                                            }
+                                        }
+                                    } // Si es secretario, mostrar todos los odontólogos
+                                    else if ("secretario".equalsIgnoreCase(rolOdon) || "administrador".equalsIgnoreCase(rolOdon)) {
+                                        for (Odontologo odon : listaOdontologos) {
+                                    %>
+                                    <tr>
+                                        <td><%= odon.getId()%></td>
+                                        <td><%= odon.getNombre()%></td>
+                                        <td><%= odon.getApellido()%></td>
+                                        <td><%= odon.getEspecialidad()%></td>
+                                        <td>
+                                            <input type="radio" name="idOdontologo" value="<%= odon.getId()%>" required>
+                                        </td>
+                                    </tr>
+                                    <%
+                                            }
+                                        }
+                                    } else {
+                                    %>
+                                    <tr><td colspan="5" class="text-center">No hay odontólogos registrados</td></tr>
+                                    <% }%>
                                 </tbody>
                             </table>
                         </div>
@@ -101,7 +133,7 @@
         <div class="row">
             <div class="col-sm-6 mb-3">
                 <label for="fecha">Fecha Turno</label>
-                <input type="date" class="form-control" id="fechaTurno" name="fechaTurno" min="<%= java.time.LocalDate.now() %>" required>
+                <input type="date" class="form-control" id="fechaTurno" name="fechaTurno" min="<%= java.time.LocalDate.now()%>" required>
             </div>
             <div class="col-sm-6 mb-3">
                 <label for="hora">Hora Turno</label>

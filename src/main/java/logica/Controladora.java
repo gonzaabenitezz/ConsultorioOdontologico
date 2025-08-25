@@ -36,23 +36,17 @@ public class Controladora {
         controlPersis.editarUsuario(usu);
     }
 
-    public boolean comprobarIngreso(String usuario, String contrasenia) {
+    public Usuario comprobarIngreso(String usuario, String contrasenia) {
 
-        boolean ingreso = false;
-
-        List<Usuario> listaUsuarios = new ArrayList<Usuario>();
-        listaUsuarios = controlPersis.getUsuarios();
+        List<Usuario> listaUsuarios = controlPersis.getUsuarios();
 
         for (Usuario usu : listaUsuarios) {
-            if (usu.getNombreUsuario().equals(usuario)) {
-                if (usu.getContrasenia().equals(contrasenia)) {
-                    ingreso = true;
-                } else {
-                    ingreso = false;
-                }
+            if (usu.getNombreUsuario().equals(usuario) && 
+                usu.getContrasenia().equals(contrasenia)) {
+                    return usu; // Devuelve el usuario válido    
             }
         }
-        return ingreso;
+        return null;
     }
 
     public void crearPacienteYResponsable(String dni, String nombre, String apellido, String telefono, String direccion,
