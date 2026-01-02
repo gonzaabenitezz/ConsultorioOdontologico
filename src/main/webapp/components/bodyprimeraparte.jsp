@@ -27,15 +27,6 @@
                 <div class="sidebar-brand-text mx-3">Consultorio Odontológico</div>
             </a>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
-
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="index.html">
-                    <i class="fas fa-solid fa-bars"></i>
-                    <span>Menú</span></a>
-            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">

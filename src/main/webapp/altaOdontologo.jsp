@@ -3,43 +3,43 @@
 <%@include file="components/bodyprimeraparte.jsp" %>
 
 <h1>Alta Odontólogos</h1>
-<p>Este es el apartado para dar de alta a los odontologos del sistema.</p>
+<p>Este es el apartado para dar de alta a los odontólogos del sistema.</p>
 
-<p>Odontologo</p>
+<p>Odontólogo</p>
 <form class="user" action="SvOdontologos" method="POST">
     <div class="form-group col">
         <div class="col-sm-6 mb-3">
-            <label for="dniodon">DNI Odontologo</label>
+            <label for="dniodon">DNI Odontólogo</label>
             <input type="text" class="form-control form-control-user" id="dni" name="dniOdon" 
                    placeholder="DNI">
         </div>
         <div class="col-sm-6 mb-3">
-            <label for="dniodon">Nombre Odontologo</label>
+            <label for="dniodon">Nombre Odontólogo</label>
             <input type="text" class="form-control form-control-user" id="nombre" name="nombreOdon"
                    placeholder="Nombre">
         </div>  
         <div class="col-sm-6 mb-3">
-            <label for="dniodon">Apellido Odontologo</label>
+            <label for="dniodon">Apellido Odontólogo</label>
             <input type="text" class="form-control form-control-user" id="apellido" name="apellidoOdon"
                    placeholder="Apellido">
         </div>
         <div class="col-sm-6 mb-3">
-            <label for="dniodon">Teléfono Odontologo</label>
+            <label for="dniodon">Teléfono Odontólogo</label>
             <input type="text" class="form-control form-control-user" id="telefono" name="telefonoOdon"
                    placeholder="Teléfono">
         </div>  
         <div class="col-sm-6 mb-3">
-            <label for="dniodon">Dirección Odontologo</label>
+            <label for="dniodon">Dirección Odontólogo</label>
             <input type="text" class="form-control form-control-user" id="direccion" name="direccionOdon"
                    placeholder="Dirección">
         </div> 
         <div class="col-sm-6 mb-3">
-            <label for="dniodon">Fecha de Nacimiento Odontologo</label> 
+            <label for="dniodon">Fecha de Nacimiento Odontólogo</label> 
             <input type="date" class="form-control form-control-user" id="fechaNac" name="fechaNacOdon"
                    placeholder="Fecha Nacimiento">
         </div>
         <div class="col-sm-6 mb-3">
-            <label for="dniodon">Especialidad Odontologo</label>
+            <label for="dniodon">Especialidad Odontólogo</label>
             <input type="text" class="form-control form-control-user" id="especialidad" name="especialidadOdon"
                    placeholder="Especialidad">
         </div> 
