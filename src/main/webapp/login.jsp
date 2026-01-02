@@ -36,7 +36,10 @@
                         <div class="card-body p-0">
                             <!-- Nested Row within Card Body -->
                             <div class="row">
-                                <div class="col-lg-6 d-none d-lg-block bg-login-image" style="background-repeat:no-repeat"></div>
+                                <div class="col-lg-6 d-none d-lg-block bg-login-image" style="background-image: url('https://blog.ucq.edu.mx/hs-fs/hubfs/iStock-810206880-1.jpg?.jpg');
+                                     background-size: cover;
+                                     background-position: center;
+                                     background-repeat: no-repeat;"></div>
                                 <div class="col-lg-6">
                                     <div class="p-5">
                                         <div class="text-center">
@@ -46,7 +49,7 @@
                                             <div class="form-group">
                                                 <input class="form-control form-control-user"
                                                        id="usuario" name="usuario"
-                                                       placeholder="usuario">
+                                                       placeholder="Usuario">
                                             </div>
                                             <div class="form-group">
                                                 <input type="password" class="form-control form-control-user"
