@@ -47,7 +47,7 @@ public class SvTurnos extends HttpServlet {
                     .collect(Collectors.toList());
             misession.setAttribute("listaTurnos", listaTurnos);
 
-        } else  {
+        } else {
 
             listaTurnos = control.getTurnos();
             misession.setAttribute("listaTurnos", listaTurnos);
@@ -69,11 +69,27 @@ public class SvTurnos extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
-        int idOdontologo = Integer.parseInt(request.getParameter("idOdontologo"));
+        String idPacienteStr = request.getParameter("idPaciente");
+        String idOdontologoStr = request.getParameter("idOdontologo");
         String fecha = request.getParameter("fechaTurno");
         String horaTurno = request.getParameter("horaTurno");
         String afeccion = request.getParameter("afeccion");
+
+        // Verificación de nulidad y contenido vacío
+        if (idPacienteStr == null || idPacienteStr.trim().isEmpty()
+                || idOdontologoStr == null || idOdontologoStr.trim().isEmpty()
+                || fecha == null || fecha.trim().isEmpty()
+                || horaTurno == null || horaTurno.trim().isEmpty()
+                || afeccion == null || afeccion.trim().isEmpty()) {
+
+            // Si falta algo, redirige con un mensaje de advertencia
+            response.sendRedirect("altaTurnos.jsp?error=campos_vacios");
+            return;
+        }
+
+        // . Una vez validados, conviértelos a int con seguridad
+        int idPaciente = Integer.parseInt(idPacienteStr);
+        int idOdontologo = Integer.parseInt(idOdontologoStr);
 
         if (horaTurno == null) {
             throw new ServletException("No se encontro el horario del turno");

@@ -26,10 +26,10 @@ public class SvEditUsuarios extends HttpServlet {
 
         int id = Integer.parseInt(request.getParameter("id"));
         Usuario usu = control.traerUsuario(id);
-        
+
         HttpSession missesion = request.getSession();
         missesion.setAttribute("usuEditar", usu);
-        
+
         response.sendRedirect("editarUsuarios.jsp");
 
     }
@@ -40,15 +40,21 @@ public class SvEditUsuarios extends HttpServlet {
 
         String nombreUsu = request.getParameter("nombreusu");
         String contrasenia = request.getParameter("contrasenia");
-        String rol = request.getParameter("rol");
- 
+
+        // Verificación de nulidad y contenido vacío
+        if (nombreUsu == null || nombreUsu.trim().isEmpty()
+                || contrasenia == null || contrasenia.trim().isEmpty()) {
+
+            // Si falta algo, redirige con un mensaje de advertencia
+            response.sendRedirect("editarUsuarios.jsp?error=campos_vacios");
+            return;
+        }
+
         Usuario usu = (Usuario) request.getSession().getAttribute("usuEditar");
         usu.setNombreUsuario(nombreUsu);
         usu.setContrasenia(contrasenia);
-        usu.setRol(rol);
-        
         control.editarUsuario(usu);
-        
+
         response.sendRedirect("SvUsuarios");
     }
 

@@ -10,6 +10,13 @@
 <h1>Editar Turno</h1>
 <p>Este es el apartado para editar los turnos del sistema.</p>
 
+<%-- Bloque para campos vacíos --%>
+<% if ("campos_vacios".equals(request.getParameter("error"))) { %>
+<div class="alert alert-danger">
+    Por favor, completa todos los campos obligatorios para continuar.
+</div>
+<% } %>
+
 <% Turno tur = (Turno) request.getSession().getAttribute("turnoEditar"); %>
 
 <%SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");%>

@@ -56,7 +56,7 @@ public class SvEditPacientes extends HttpServlet {
         String telefono = request.getParameter("telefonopas");
         String direccion = request.getParameter("direccionpas");
         String fechaNacString = request.getParameter("fechanacpas");
-        String tieneOSString = request.getParameter("obrasocialpas");
+        String OSValido = request.getParameter("obrasocialpas");
         String tipoSangre = request.getParameter("tiposangrepas");
 
         //Datos Responsables
@@ -67,6 +67,28 @@ public class SvEditPacientes extends HttpServlet {
         String direccionRes = request.getParameter("direccionRes");
         String fechaNacStringRes = request.getParameter("fechaNacRes");
         String tipoRes = request.getParameter("tipo_respRes");
+
+        // Verificación de nulidad y contenido vacío
+        if (dni == null || dni.trim().isEmpty()
+                || nombre == null || nombre.trim().isEmpty()
+                || apellido == null || apellido.trim().isEmpty()
+                || telefono == null || telefono.trim().isEmpty()
+                || direccion == null || direccion.trim().isEmpty()
+                || fechaNacString == null || fechaNacString.trim().isEmpty()
+                || OSValido == null || OSValido.trim().isEmpty()
+                || tipoSangre == null || tipoSangre.trim().isEmpty()) {
+
+            // Si falta algo, redirige con un mensaje de advertencia
+            response.sendRedirect("editarPacientes.jsp?error=campos_vacios");
+            return;
+        }
+        
+        if (!"true".equals(OSValido) && !"false".equals(OSValido)) {
+            response.sendRedirect("editarPacientes.jsp?error=OS_invalido");
+            return;
+        }
+        
+        String tieneOSString = OSValido;
 
         // Crear un formateador de fecha
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -108,7 +130,7 @@ public class SvEditPacientes extends HttpServlet {
 
                 control.editarResponsable(resp);
             } else {
-                        throw new IllegalStateException("Error: No se encontró el objeto 'respEditar' en la sesión.");
+                throw new IllegalStateException("Error: No se encontró el objeto 'respEditar' en la sesión.");
             }
         }
 

@@ -8,6 +8,13 @@
 <h1>Alta Turno</h1>
 <p>Este es el apartado para dar de alta los turnos del sistema.</p>
 
+<%-- Bloque para campos vacíos --%>
+<% if ("campos_vacios".equals(request.getParameter("error"))) { %>
+<div class="alert alert-danger">
+    Por favor, completa todos los campos obligatorios para continuar.
+</div>
+<% } %>
+
 <form class="user" action="SvTurnos" method="POST">
     <div class="form-group col">     
 
