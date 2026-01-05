@@ -19,27 +19,24 @@ import logica.Turno;
 
 @WebServlet(name = "SvEditTurnos", urlPatterns = {"/SvEditTurnos"})
 public class SvEditTurnos extends HttpServlet {
-    
+
     Controladora control = new Controladora();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {        
-            
+            throws ServletException, IOException {
+
         int id = Integer.parseInt(request.getParameter("id"));
         Turno tur = control.traerTurno(id);
         HttpSession misession = request.getSession();
-        
-        misession.setAttribute("turnoEditar", tur);
-        
 
-        
-        
+        misession.setAttribute("turnoEditar", tur);
+
         response.sendRedirect("editarTurnos.jsp");
 
     }
@@ -47,16 +44,28 @@ public class SvEditTurnos extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
-        int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
-        int idOdontologo = Integer.parseInt(request.getParameter("idOdontologo"));
+
+        String idPacienteStr = request.getParameter("idPaciente");
+        String idOdontologoStr = request.getParameter("idOdontologo");
         String fecha = request.getParameter("fechaTurno");
         String horaTurno = request.getParameter("horaTurno");
         String afeccion = request.getParameter("afeccion");
-        
-        if (horaTurno == null) {
-            throw new ServletException("No se encontro el horario del turno");
+
+        // Verificación de nulidad y contenido vacío
+        if (idPacienteStr == null || idPacienteStr.trim().isEmpty()
+                || idOdontologoStr == null || idOdontologoStr.trim().isEmpty()
+                || fecha == null || fecha.trim().isEmpty()
+                || horaTurno == null || horaTurno.trim().isEmpty()
+                || afeccion == null || afeccion.trim().isEmpty()) {
+
+            // Si falta algo, redirige con un mensaje de advertencia
+            response.sendRedirect("editarTurnos.jsp?error=campos_vacios");
+            return;
         }
+
+        // . Una vez validados, conviértelos a int con seguridad
+        int idPaciente = Integer.parseInt(idPacienteStr);
+        int idOdontologo = Integer.parseInt(idOdontologoStr);
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date fechaTurno = null;
@@ -66,17 +75,17 @@ public class SvEditTurnos extends HttpServlet {
         } catch (ParseException ex) {
             Logger.getLogger(SvSecretarios.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         Turno tur = (Turno) request.getSession().getAttribute("turnoEditar");
         //tur.setPacien(pacien);
         //tur.setOdonto(odonto);
         tur.setFecha_turno(fechaTurno);
         tur.setHora_turno(horaTurno);
         tur.setAfeccion(afeccion);
-        
+
         control.editarTurno(tur);
         response.sendRedirect("SvTurnos");
-        
+
     }
 
     @Override

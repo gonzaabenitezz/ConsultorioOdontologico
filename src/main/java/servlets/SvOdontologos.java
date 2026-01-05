@@ -52,6 +52,14 @@ public class SvOdontologos extends HttpServlet {
 
         int unUsuario = (int) request.getSession().getAttribute("id_usuario");
 
+        String dniOdon = request.getParameter("dniOdon");
+        String nombreOdon = request.getParameter("nombreOdon");
+        String apellidoOdon = request.getParameter("apellidoOdon");
+        String telefonoOdon = request.getParameter("telefonoOdon");
+        String direccionOdon = request.getParameter("direccionOdon");
+        String fechaNacStringOdon = request.getParameter("fechaNacOdon");
+        String especialidadOdon = request.getParameter("especialidadOdon");
+        
         try {
 
             //Horario
@@ -61,12 +69,20 @@ public class SvOdontologos extends HttpServlet {
             String inicioHorOdon = request.getParameter("inicioHorOdon");
             String finHorOdon = request.getParameter("finHorOdon");
 
-            if (inicioHorOdon == null || inicioHorOdon.trim().isEmpty()) {
-                throw new ServletException("Horario de inicio no proporcionado");
-            }
+            // Verificación de nulidad y contenido vacío
+            if (inicioHorOdon == null || inicioHorOdon.trim().isEmpty()
+                    || finHorOdon == null || finHorOdon.trim().isEmpty()
+                    || dniOdon == null || dniOdon.trim().isEmpty()
+                    || nombreOdon == null || nombreOdon.trim().isEmpty()
+                    || apellidoOdon == null || apellidoOdon.trim().isEmpty()
+                    || telefonoOdon == null || telefonoOdon.trim().isEmpty()
+                    || direccionOdon == null || direccionOdon.trim().isEmpty()
+                    || fechaNacStringOdon == null || fechaNacStringOdon.trim().isEmpty()
+                    || especialidadOdon == null || especialidadOdon.trim().isEmpty()) {
 
-            if (finHorOdon == null || finHorOdon.trim().isEmpty()) {
-                throw new ServletException("Fin de horario no proporcionado");
+                // Si falta algo, redirige con un mensaje de advertencia
+                response.sendRedirect("altaOdontologo.jsp?error=campos_vacios");
+                return;
             }
 
             //Guardar horario en session y redirigir a SvHorarios
@@ -80,14 +96,7 @@ public class SvOdontologos extends HttpServlet {
 
         int unHorario = (int) request.getSession().getAttribute("id_horario");
 
-        String dniOdon = request.getParameter("dniOdon");
-        String nombreOdon = request.getParameter("nombreOdon");
-        String apellidoOdon = request.getParameter("apellidoOdon");
-        String telefonoOdon = request.getParameter("telefonoOdon");
-        String direccionOdon = request.getParameter("direccionOdon");
-        String fechaNacStringOdon = request.getParameter("fechaNacOdon");
-        String especialidadOdon = request.getParameter("especialidadOdon");
-
+        
         //Resto de valores del Odontologo
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date fechaNacOdon = null;

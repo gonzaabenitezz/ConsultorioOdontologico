@@ -5,22 +5,36 @@
     
 <h1>Edición de Usuarios</h1>
 <p>Este es el apartado para modificar un usuarios del sistema.</p>
-    
+  
+<%-- Bloque para campos vacíos --%>
+<% if ("campos_vacios".equals(request.getParameter("error"))) { %>
+<div class="alert alert-danger">
+    Por favor, completa todos los campos obligatorios para continuar.
+</div>
+<% } %>
+
+<%-- Bloque para rol inválido --%>
+<% if ("rol_invalido".equals(request.getParameter("error"))) { %>
+<div class="alert alert-danger">
+    El rol seleccionado no es válido. Por favor, no realice cambios en esa opción.
+</div>
+<% }%> 
+
 <%Usuario usu  = (Usuario) request.getSession().getAttribute("usuEditar");%> <!-- aca se hace el caste de Usuario para que dfuncione -->
      
 <form class="user" action="SvEditUsuarios" method="POST">
     <div class="form-group col">
         <div class="col-sm-6 mb-3">
             <input type="text" class="form-control form-control-user" id="nombreusu" name="nombreusu"
-                   placeholder="Nombre Usuario" value="<%=usu.getNombreUsuario()%>">
+                   placeholder="Nombre Usuario" value="<%=usu.getNombreUsuario()%>" required="">
         </div>
         <div class="col-sm-6 mb-3">
             <input type="password" class="form-control form-control-user" id="contrasenia" name="contrasenia"
-                   placeholder="Contraseña" value="<%=usu.getContrasenia()%>">
+                   placeholder="Contraseña" value="<%=usu.getContrasenia()%>" required="">
         </div>  
         <div class="col-sm-6 mb-3">
             <input type="text" class="form-control form-control-user" id="rol" name="rol"
-                   placeholder="Rol" value="<%=usu.getRol()%>">
+                   placeholder="Rol" value="<%=usu.getRol()%>" required="" readonly="">
         </div>
     </div>                 
     <button class="btn btn-primary btn-user btn-block" type="submit">

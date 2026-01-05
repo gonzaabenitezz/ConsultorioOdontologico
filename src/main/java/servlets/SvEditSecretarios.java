@@ -52,6 +52,20 @@ public class SvEditSecretarios extends HttpServlet {
         String fechaNacString = request.getParameter("fechanacsecre");
         String sector = request.getParameter("sectorsecre");
         
+        // Verificación de nulidad y contenido vacío
+        if (dni == null || dni.trim().isEmpty()
+                || nombre == null || nombre.trim().isEmpty()
+                || apellido == null || apellido.trim().isEmpty()
+                || telefono == null || telefono.trim().isEmpty()
+                || direccion == null || direccion.trim().isEmpty()
+                || fechaNacString == null || fechaNacString.trim().isEmpty()
+                || sector == null || sector.trim().isEmpty()) {
+
+            // Si falta algo, redirige con un mensaje de advertencia
+            response.sendRedirect("editarSecretarios.jsp?error=campos_vacios");
+            return;
+        }
+        
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date fechaNac = null;
         

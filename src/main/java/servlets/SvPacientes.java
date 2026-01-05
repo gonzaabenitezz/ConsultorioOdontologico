@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -32,10 +33,10 @@ public class SvPacientes extends HttpServlet {
             throws ServletException, IOException {
 
         List<Paciente> listaPacientes = new ArrayList<Paciente>();
-      //  List<Responsable> listaResponsables = new ArrayList<Responsable>();
+        //  List<Responsable> listaResponsables = new ArrayList<Responsable>();
 
         listaPacientes = control.getPacientes();
-       // listaResponsables = control.getResponsables();
+        // listaResponsables = control.getResponsables();
 
         //for (Paciente pac : listaPacientes) {
         //    System.out.println("Nombre: " + pac.getNombre());
@@ -43,8 +44,8 @@ public class SvPacientes extends HttpServlet {
         //}
         HttpSession misession = request.getSession();
         misession.setAttribute("listaPacientes", listaPacientes); // el name "listaUsuarios" es una especie de alias. Esto hace que despues de que listaUsuarios se guarde (linea 30), esa misma lista se guardara como un atributo de session, eso hace que por mas que estemos fuera del servlet u otra cosa, realizara de igual manera la consulta
-       // misession.setAttribute("listaResponsables", listaResponsables);
-        
+        // misession.setAttribute("listaResponsables", listaResponsables);
+
         response.sendRedirect("verPacientes.jsp");
 
     }
@@ -60,7 +61,7 @@ public class SvPacientes extends HttpServlet {
         String telefono = request.getParameter("telefonopac");
         String direccion = request.getParameter("direccionpac");
         String fechaNacString = request.getParameter("fechaNacpac");
-        String tieneOSString = request.getParameter("tieneOSpac");
+        String OSValido = request.getParameter("tieneOSpac");
         String tipoSangre = request.getParameter("tipoSangrepac");
         //String responsable = request.getParameter("responsable");
 
@@ -72,6 +73,28 @@ public class SvPacientes extends HttpServlet {
         String direccionRes = request.getParameter("direccionRes");
         String fechaNacStringRes = request.getParameter("fechaNacRes");
         String tipoRes = request.getParameter("tipo_respRes");
+
+        // Verificación de nulidad y contenido vacío
+        if (dni == null || dni.trim().isEmpty()
+                || nombre == null || nombre.trim().isEmpty()
+                || apellido == null || apellido.trim().isEmpty()
+                || telefono == null || telefono.trim().isEmpty()
+                || direccion == null || direccion.trim().isEmpty()
+                || fechaNacString == null || fechaNacString.trim().isEmpty()
+                || OSValido == null || OSValido.trim().isEmpty()
+                || tipoSangre == null || tipoSangre.trim().isEmpty()) {
+
+            // Si falta algo, redirige con un mensaje de advertencia
+            response.sendRedirect("altaPacientes.jsp?error=campos_vacios");
+            return;
+        }
+
+        if (!"true".equals(OSValido) && !"false".equals(OSValido)) {
+            response.sendRedirect("altaPacientes.jsp?error=OS_invalido");
+            return;
+        }
+
+        String tieneOSString = OSValido;
 
         // Crear un formateador de fecha
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");

@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -41,13 +42,34 @@ public class SvUsuarios extends HttpServlet {
 
         String nombreUsuario = request.getParameter("nombreusu");
         String contra = request.getParameter("contrasenia");
-        String rol = request.getParameter("rol");
+        String rolRecibido = request.getParameter("rol");
 
-        int id_usuario  = control.crearUsuario(nombreUsuario, contra, rol);
-        
+        // Verificación de nulidad y contenido vacío
+        if (nombreUsuario == null || nombreUsuario.trim().isEmpty()
+                || contra == null || contra.trim().isEmpty()
+                || rolRecibido == null || rolRecibido.trim().isEmpty()) {
+
+            // Si falta algo, redirige con un mensaje de advertencia
+            response.sendRedirect("altaUsuarios.jsp?error=campos_vacios");
+            return;
+        }
+
+        // Lista blanca de roles válidos
+        List<String> rolesValidos = Arrays.asList("Administrador/a", "Odontólogo/a", "Secretario/a");
+
+        if (!rolesValidos.contains(rolRecibido)) {
+            // Si el usuario manipuló el valor, lanzar error o asignar rol por defecto
+            response.sendRedirect("altaUsuarios.jsp?error=rol_invalido");
+            return;
+        }
+
+        String rol = rolRecibido;
+
+        int id_usuario = control.crearUsuario(nombreUsuario, contra, rol);
+
         HttpSession idsession = request.getSession();
         idsession.setAttribute("id_usuario", id_usuario);
-        
+
         response.sendRedirect("index.jsp");
     }
 

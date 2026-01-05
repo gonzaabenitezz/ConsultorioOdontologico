@@ -6,7 +6,14 @@
     
 <h1>Edición de Secretarios</h1>
 <p>Este es el apartado para modificar un secretario del sistema.</p>
-    
+
+<%-- Bloque para campos vacíos --%>
+<% if ("campos_vacios".equals(request.getParameter("error"))) { %>
+<div class="alert alert-danger">
+    Por favor, completa todos los campos obligatorios para continuar.
+</div>
+<% } %>
+
 <%Secretario secre  = (Secretario) request.getSession().getAttribute("secreEditar");%> <!-- aca se hace el caste de Usuario para que dfuncione -->
 
 <%SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");%>
@@ -18,37 +25,37 @@
         <div class="col-sm-6 mb-3">
             <label for="dnipas">DNI:</label>
             <input type="number" class="form-control form-control-user" id="dnipas" name="dnisecre"
-                   placeholder="Dni" value="<%=secre.getDni()%>">
+                   placeholder="Dni" value="<%=secre.getDni()%>" required="">
         </div>
         <div class="col-sm-6 mb-3">
             <label for="nombrepas">Nombre:</label>
             <input type="text" class="form-control form-control-user" id="nombrepas" name="nombresecre"
-                   placeholder="Nombre" value="<%=secre.getNombre() %>">
+                   placeholder="Nombre" value="<%=secre.getNombre() %>" required="">
         </div>  
         <div class="col-sm-6 mb-3">
             <label for="apellidopas">Apellido:</label>
             <input type="text" class="form-control form-control-user" id="apellidopas" name="apellidosecre"
-                   placeholder="Apellido" value="<%=secre.getApellido()%>">
+                   placeholder="Apellido" value="<%=secre.getApellido()%>" required="">
         </div>
         <div class="col-sm-6 mb-3">
             <label for="telefonopas">Telefono:</label>
             <input type="text" class="form-control form-control-user" id="telefonopas" name="telefonosecre"
-                   placeholder="Telefono" value="<%=secre.getTelefono()%>">
+                   placeholder="Telefono" value="<%=secre.getTelefono()%>" required="">
         </div>
         <div class="col-sm-6 mb-3">
             <label for="direccionpas">Dirección:</label>
             <input type="text" class="form-control form-control-user" id="direccionpas" name="direccionsecre"
-                   placeholder="Dirección" value="<%=secre.getDireccion()%>">
+                   placeholder="Dirección" value="<%=secre.getDireccion()%>" required="">
         </div>  
         <div class="col-sm-6 mb-3">
             <label for="fechanacpas">Fecha de Nacimiento:</label>
             <input type="date" class="form-control form-control-user" id="fechanacpas" name="fechanacsecre"
-                   placeholder="Fecha de Nacimiento" value="<%= fechaFormateada%>"> <!-- variable formateada -->
+                   placeholder="Fecha de Nacimiento" value="<%= fechaFormateada%>" required=""> <!-- variable formateada -->
         </div>
         <div class="col-sm-6 mb-3">
             <label for="fechanacpas">Sector:</label>
             <input type="text" class="form-control form-control-user" id="fechanacpas" name="sectorsecre"
-                   placeholder="Sector" value="<%= secre.getSector() %>"> <!-- variable formateada -->
+                   placeholder="Sector" value="<%= secre.getSector() %>" required=""> <!-- variable formateada -->
         </div>
     </div>                 
     <button class="btn btn-primary btn-user btn-block" type="submit">
