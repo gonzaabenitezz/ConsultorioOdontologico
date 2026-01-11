@@ -31,9 +31,9 @@
         <div class="col-sm-6 mb-3">
             <select class="form-control" id="rol" name="rol" style="border-radius: 10rem; height: 3.1rem; padding-left: 0.8rem;" required="">
                 <option value="" disabled selected>Seleccione un Rol</option>
-                <option value="Administrador/a">Administrador/a</option>
-                <option value="Odontólogo/a">Odontólogo/a</option>
-                <option value="Secretario/a">Secretario/a</option>
+                <option value="admin">admin</option>
+                <option value="odonto">odonto</option>
+                <option value="secre">secre</option>
             </select>
         </div>
     </div>                 
