@@ -92,7 +92,7 @@
                                     <%
                                         String rolOdon = (String) misession.getAttribute("rol");
                                         Integer idOdon = null;
-                                        if ("odontologo".equalsIgnoreCase(rolOdon)) {
+                                        if ("odonto".equalsIgnoreCase(rolOdon)) {
                                             idOdon = (Integer) misession.getAttribute("id"); // puede ser null si faltara
                                         }
                                         List<Odontologo> listaOdontologos = (List) request.getSession().getAttribute("listaOdontologos");
@@ -100,7 +100,7 @@
                                         if (listaOdontologos != null && !listaOdontologos.isEmpty()) {
 
                                             // Si es odontólogo, mostrar solo sus datos
-                                            if ("odontologo".equalsIgnoreCase(rolOdon)) {
+                                            if ("odonto".equalsIgnoreCase(rolOdon)) {
                                                 for (Odontologo odon : listaOdontologos) {
                                                     if (idOdon == odon.getId()) {
                                     %>
@@ -118,7 +118,7 @@
                                             }
                                         }
                                     } // Si es secretario, mostrar todos los odontólogos
-                                    else if ("secretario".equalsIgnoreCase(rolOdon) || "administrador".equalsIgnoreCase(rolOdon)) {
+                                    else if ("secre".equalsIgnoreCase(rolOdon) || "admin".equalsIgnoreCase(rolOdon)) {
                                         for (Odontologo odon : listaOdontologos) {
                                     %>
                                     <tr>

@@ -2,17 +2,17 @@
 <body id="page-top">
 
     <!--Validacion Sesion-->
-    
+
     <%
         HttpSession misession = request.getSession();
         String usuario = (String) request.getSession().getAttribute("usuario");  //vid 14 min40.00 expl. se trae el atributo usuario aca poruqe si aca no existe el atributo usuario significa que la persona no inicio sesion y eso se sabe xq en SvLogin.java se esblece que al atributo usuario se seteara solo si el usuario y contraseña son correctos (linea 40)
         String rol = (String) request.getSession().getAttribute("rol");
-    if(usuario==null){
-        response.sendRedirect("sinLogin.jsp");
+        if (usuario == null) {
+            response.sendRedirect("sinLogin.jsp");
         }
     %>
-        
-    
+
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -51,7 +51,7 @@
                     </div>
                 </div>
             </li>
-            
+
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSecretary"
@@ -102,7 +102,7 @@
                     </div>
                 </div>
             </li>
-            
+
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTurns"
@@ -163,14 +163,6 @@
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
-                                </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -191,3 +183,17 @@
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Clinica Odontológica</h1>
                     </div>
+
+                    <%-- Bloque para campos vacíos --%> 
+                    <% if ("acceso_denegado".equals(request.getParameter("error"))) { %>
+                    <div class="alert alert-danger alert-dismissible fade show shadow-lg" 
+                         role="alert" 
+                         style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; width: 90%; max-width: 500px;">
+
+                        <strong>¡Atención!</strong> Acceso denegado, por favor no ingresar sin el rol necesario.
+
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="background: none; border: none; font-size: 1.5rem; position: absolute; top: 0; right: 10px;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <% }%>

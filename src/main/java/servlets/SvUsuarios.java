@@ -55,7 +55,7 @@ public class SvUsuarios extends HttpServlet {
         }
 
         // Lista blanca de roles válidos
-        List<String> rolesValidos = Arrays.asList("Administrador/a", "Odontólogo/a", "Secretario/a");
+        List<String> rolesValidos = Arrays.asList("admin", "odonto", "secre");
 
         if (!rolesValidos.contains(rolRecibido)) {
             // Si el usuario manipuló el valor, lanzar error o asignar rol por defecto
