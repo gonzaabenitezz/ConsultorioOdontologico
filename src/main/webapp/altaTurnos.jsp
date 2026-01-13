@@ -143,8 +143,11 @@
                 <input type="date" class="form-control" id="fechaTurno" name="fechaTurno" min="<%= java.time.LocalDate.now()%>" required>
             </div>
             <div class="col-sm-6 mb-3">
-                <label for="hora">Hora Turno</label>
-                <input type="time" class="form-control" id="horaTurno" name="horaTurno" min="07:00" step="1800" required>
+                <label for="horaTurno">Hora Turno</label>
+                <select class="form-control" id="horaTurno" name="horaTurno" required>
+                    <option value="">-- Seleccione un odontólogo primero --</option>
+                </select>
+                <small id="rangoInfo" class="text-muted"></small>
             </div>
             <div class="col-sm-12 mb-3">
                 <label for="afeccion">Afección</label>
@@ -155,5 +158,45 @@
         <button class="btn btn-primary btn-user btn-block" type="submit">Crear Turno</button>
     </div>
 </form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const selectHora = document.getElementById('horaTurno');
+        const radiosOdontologos = document.querySelectorAll('input[name="idOdontologo"]');
+
+        radiosOdontologos.forEach(radio => {
+            radio.addEventListener('change', function () {
+                fetch('SvObtenerHorario?idOdontologo=' + this.value)
+                        .then(response => response.text())
+                        .then(text => {
+                            // Limpieza de caracteres invisibles y parseo
+                            const data = JSON.parse(text.trim().replace(/[\n\r]/g, ""));
+
+                            // Reiniciar select con opción por defecto
+                            selectHora.options.length = 0;
+                            selectHora.add(new Option("-- Seleccione una hora --", ""));
+
+                            // Cálculo de intervalos (convertir HH:mm a minutos totales)
+                            let [hI, mI] = data.inicio.substring(0, 5).split(':').map(Number);
+                            let [hF, mF] = data.fin.substring(0, 5).split(':').map(Number);
+
+                            let minActual = (hI * 60) + mI;
+                            let minLimite = (hF * 60) + mF;
+
+                            // Llenar select cada 30 minutos
+                            while (minActual <= minLimite) {
+                                let hh = Math.floor(minActual / 60).toString().padStart(2, '0');
+                                let mm = (minActual % 60).toString().padStart(2, '0');
+                                let horaLabel = hh + ":" + mm;
+
+                                selectHora.add(new Option(horaLabel, horaLabel));
+                                minActual += 30;
+                            }
+                        })
+                        .catch(err => console.error("Error al cargar horarios"));
+            });
+        });
+    });
+</script>
 
 <%@include file="components/bodyfinal.jsp" %>

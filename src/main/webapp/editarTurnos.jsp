@@ -45,24 +45,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% List<Paciente> listaPacientes = (List) request.getSession().getAttribute("listaPacientes"); %>
-                                    <% if (listaPacientes != null && !listaPacientes.isEmpty()) {
-                                            for (Paciente pac : listaPacientes) {%>
                                     <tr>
-                                        <td><%= pac.getId()%></td>
-                                        <td><%= pac.getDni()%></td>
-                                        <td><%= pac.getNombre()%></td>
-                                        <td><%= pac.getApellido()%></td>
-                                        <td>
-                                            <input type="radio" name="idPaciente" value="<%= pac.getId()%>" <%= (tur.getPacien().getId() == pac.getId()) ? "checked" : ""%> required> <!--compara si ese paciente es el que corresponde al turno que se está editando. Si sí, se marca con checked.
-
-                                            -->
+                                        <td><%= tur.getPacien().getId()%></td>
+                                        <td><%= tur.getPacien().getDni()%></td>
+                                        <td><%= tur.getPacien().getNombre()%></td>
+                                        <td> <%= tur.getPacien().getApellido()%></td>
+                                        <td class="text-center">
+                                            <input type="radio" name="idPaciente" value="<%= tur.getPacien().getId()%>" checked required>
                                         </td>
                                     </tr>
-                                    <%  }
-                                    } else { %>
-                                    <tr><td colspan="5" class="text-center">No hay pacientes registrados</td></tr>
-                                    <% } %>
                                 </tbody>
                             </table>
                         </div>
@@ -89,54 +80,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%
-                                        String rolOdon = (String) misession.getAttribute("rol");
-                                        Integer idOdon = null;
-                                        if ("odonto".equalsIgnoreCase(rolOdon)) {
-                                            idOdon = (Integer) misession.getAttribute("id"); // puede ser null si faltara
-                                        }
-                                        List<Odontologo> listaOdontologos = (List) request.getSession().getAttribute("listaOdontologos");
-
-                                        if (listaOdontologos != null && !listaOdontologos.isEmpty()) {
-
-                                            // Si es odontólogo, mostrar solo sus datos
-                                            if ("odonto".equalsIgnoreCase(rolOdon)) {
-                                                for (Odontologo odon : listaOdontologos) {
-                                                    if (idOdon == odon.getId()) {
-                                    %>
                                     <tr>
-                                        <td><%= odon.getId()%></td>
-                                        <td><%= odon.getNombre()%></td>
-                                        <td><%= odon.getApellido()%></td>
-                                        <td><%= odon.getEspecialidad()%></td>
-                                        <td>
-                                            <input type="radio" name="idOdontologo" value="<%= odon.getId()%>" <%= (tur.getOdonto().getId() == odon.getId()) ? "checked" : ""%> required>
+                                        <td><%= tur.getOdonto().getId()%></td>
+                                        <td><%= tur.getOdonto().getNombre()%></td>
+                                        <td><%= tur.getOdonto().getApellido()%></td>
+                                        <td><%= tur.getOdonto().getEspecialidad()%></td>
+                                        <td class="text-center">
+                                            <input type="radio" name="idOdontologo" value="<%= tur.getOdonto().getId()%>" checked required>
                                         </td>
                                     </tr>
-                                    <%
-                                                break; // detenerse después de mostrar su propio registro
-                                            }
-                                        }
-                                    } // Si es secretario, mostrar todos los odontólogos
-                                    else if ("secre".equalsIgnoreCase(rolOdon) || "admin".equalsIgnoreCase(rolOdon)) {
-                                        for (Odontologo odon : listaOdontologos) {
-                                    %>
-                                    <tr>
-                                        <td><%= odon.getId()%></td>
-                                        <td><%= odon.getNombre()%></td>
-                                        <td><%= odon.getApellido()%></td>
-                                        <td><%= odon.getEspecialidad()%></td>
-                                        <td>
-                                            <input type="radio" name="idOdontologo" value="<%= odon.getId()%>" <%= (tur.getOdonto().getId() == odon.getId()) ? "checked" : ""%> required>
-                                        </td>
-                                    </tr>
-                                    <%
-                                            }
-                                        }
-                                    } else {
-                                    %>
-                                    <tr><td colspan="5" class="text-center">No hay odontólogos registrados</td></tr>
-                                    <% }%>
                                 </tbody>
                             </table>
                         </div>
@@ -152,8 +104,10 @@
                 <input type="date" class="form-control" id="fechaTurno" name="fechaTurno" value="<%= fechaFormateada%>" min="<%= java.time.LocalDate.now()%>" required>
             </div>
             <div class="col-sm-6 mb-3">
-                <label for="hora">Hora Turno</label>
-                <input type="time" class="form-control" id="horaTurno" name="horaTurno" value="<%= tur.getHora_turno()%>" min="07:00" step="1800" required>
+                <label for="fecha">Horario Turno</label>
+                <select class="form-control" id="horaTurno" name="horaTurno" required>
+                    <option value="<%= tur.getHora_turno()%>"><%= tur.getHora_turno()%></option>
+                </select>
             </div>
             <div class="col-sm-12 mb-3">
                 <label for="afeccion">Afección</label>
@@ -164,5 +118,56 @@
         <button class="btn btn-primary btn-user btn-block" type="submit">Editar Turno</button>
     </div>
 </form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const selectHora = document.getElementById('horaTurno');
+        const radiosOdontologos = document.querySelectorAll('input[name="idOdontologo"]');
+        const horaActualTurno = "<%= tur.getHora_turno()%>"; // Guardamos la hora que ya tiene el turno
+
+        // Función para cargar horarios (la misma de antes)
+        function cargarHorarios(idOdontologo) {
+            fetch('SvObtenerHorario?idOdontologo=' + idOdontologo)
+                    .then(response => response.text())
+                    .then(text => {
+                        const data = JSON.parse(text.trim().replace(/[\n\r]/g, ""));
+                        selectHora.options.length = 0;
+
+                        let [hI, mI] = data.inicio.substring(0, 5).split(':').map(Number);
+                        let [hF, mF] = data.fin.substring(0, 5).split(':').map(Number);
+                        let minActual = (hI * 60) + mI;
+                        let minLimite = (hF * 60) + mF;
+
+                        while (minActual <= minLimite) {
+                            let hh = Math.floor(minActual / 60).toString().padStart(2, '0');
+                            let mm = (minActual % 60).toString().padStart(2, '0');
+                            let horaLabel = hh + ":" + mm;
+
+                            let opt = new Option(horaLabel, horaLabel);
+                            // Si la hora que estamos generando es la que ya tenía el turno, la seleccionamos
+                            if (horaLabel === horaActualTurno) {
+                                opt.selected = true;
+                            }
+                            selectHora.add(opt);
+                            minActual += 30;
+                        }
+                    })
+                    .catch(err => console.error("Error al cargar horarios"));
+        }
+
+        // 1. ESCUCHAR CAMBIOS: Cuando el usuario cambia de odontólogo manualmente
+        radiosOdontologos.forEach(radio => {
+            radio.addEventListener('change', function () {
+                cargarHorarios(this.value);
+            });
+        });
+
+        // 2. EJECUCIÓN INICIAL: Cargar horarios del odontólogo que ya viene marcado (checked)
+        const radioSeleccionado = document.querySelector('input[name="idOdontologo"]:checked');
+        if (radioSeleccionado) {
+            cargarHorarios(radioSeleccionado.value);
+        }
+    });
+</script>
 
 <%@include file="components/bodyfinal.jsp" %>

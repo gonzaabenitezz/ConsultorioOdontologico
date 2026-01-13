@@ -111,7 +111,9 @@ public class AuthFilter implements Filter {
                 || uri.endsWith("LoginError.jsp")
                 || uri.endsWith("sinLogin.jsp")
                 || uri.contains("SvLogin")
-                || uri.contains("SvLogout")) {
+                || uri.contains("SvLogout")
+                || uri.contains("sb-admin-2.css")
+                || uri.contains("sb-admin-2.min.css")) {
 
             chain.doFilter(req, res);
 
