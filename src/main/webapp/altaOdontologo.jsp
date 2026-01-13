@@ -10,7 +10,7 @@
 <div class="alert alert-danger">
     Por favor, completa todos los campos obligatorios para continuar.
 </div>
-<% } %>
+<% }%>
 
 <p>Odontólogo</p>
 <form class="user" action="SvOdontologos" method="POST">
@@ -51,21 +51,73 @@
                    placeholder="Especialidad" required="">
         </div> 
         <!-- Sector de Horario-->
-        <div class="col-sm-6 mb-3">
-            <label for="dniodon">Inicio de Horario</label> 
-            <input type="time" class="form-control form-control-user" id="inicioHor" name="inicioHorOdon"
-                   placeholder="Inicio de Horario" min="07:00" step="1800" required=""> <!-- min es el horario minimo que se puede colocar y step es un rango de 30 minutos que se debe coloar -->
+        <div class="row px-3">
+            <div class="col-sm-6 mb-3">
+                <label for="inicioHorOdon">Inicio de Horario</label> 
+                <select class="form-control" id="inicioHor" name="inicioHorOdon" required>
+                </select>
+            </div>
+            <div class="col-sm-6 mb-3">
+                <label for="finHorOdon">Fin de Horario</label>
+                <select class="form-control" id="finHor" name="finHorOdon" required>
+                </select>
+            </div> 
         </div>
-        <div class="col-sm-6 mb-3">
-            <label for="dniodon">Fin de Horario</label>
-            <input type="time" class="form-control form-control-user" id="finHor" name="finHorOdon"
-                   placeholder="Fin de Horario" max="22:00" step="1800" required=""><!-- max es el horario maximo que se puede colocar y step es un rango de 30 minutos que se debe coloar -->
-        </div> 
     </div>
 
     <button class="btn btn-primary btn-user btn-block" type="submit"> 
         Crear Odontólogo
     </button>
 </form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const selectInicio = document.getElementById('inicioHor');
+        const selectFin = document.getElementById('finHor');
+
+        const horaMin = 7;  // 07:00 AM
+        const horaMax = 22; // 10:00 PM
+
+        function generarOpciones() {
+            // Limpiar selects
+            selectInicio.innerHTML = "";
+            selectFin.innerHTML = "";
+
+            for (let h = horaMin; h <= horaMax; h++) {
+                // Generar para la hora exacta (:00) y la media hora (:30)
+                ["00", "30"].forEach(min => {
+                    // Evitar 22:30 si el máximo es 22:00
+                    if (h === horaMax && min === "30")
+                        return;
+
+                    let horaFormateada = h.toString().padStart(2, '0') + ":" + min;
+
+                    // Lógica para Inicio: No puede seleccionar la última hora (22:00)
+                    if (h < horaMax) {
+                        selectInicio.add(new Option(horaFormateada, horaFormateada));
+                    } else if (h === horaMax && min === "00") {
+                        // Opcional: Si quieres que 22:00 sea inicio, quita este IF. 
+                        // Pero según tu pedido, 22:00 no debería ser inicio.
+                    }
+
+                    // Lógica para Fin: Puede ser cualquier hora desde las 07:30
+                    if (!(h === horaMin && min === "00")) {
+                        selectFin.add(new Option(horaFormateada, horaFormateada));
+                    }
+                });
+            }
+        }
+
+        generarOpciones();
+
+        // Validación extra: El fin no puede ser menor o igual al inicio
+        selectFin.addEventListener('change', function () {
+            if (selectFin.value <= selectInicio.value) {
+                alert("La hora de fin debe ser posterior a la hora de inicio");
+                selectFin.selectedIndex = selectFin.options.length - 1;
+            }
+        });
+    });
+</script>
 
 <%@include file="components/bodyfinal.jsp" %>

@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import logica.Controladora;
-import logica.Odontologo;
-import logica.Paciente;
 import logica.Turno;
 
 @WebServlet(name = "SvEditTurnos", urlPatterns = {"/SvEditTurnos"})
@@ -45,16 +43,12 @@ public class SvEditTurnos extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String idPacienteStr = request.getParameter("idPaciente");
-        String idOdontologoStr = request.getParameter("idOdontologo");
         String fecha = request.getParameter("fechaTurno");
         String horaTurno = request.getParameter("horaTurno");
         String afeccion = request.getParameter("afeccion");
 
         // Verificación de nulidad y contenido vacío
-        if (idPacienteStr == null || idPacienteStr.trim().isEmpty()
-                || idOdontologoStr == null || idOdontologoStr.trim().isEmpty()
-                || fecha == null || fecha.trim().isEmpty()
+        if (fecha == null || fecha.trim().isEmpty()
                 || horaTurno == null || horaTurno.trim().isEmpty()
                 || afeccion == null || afeccion.trim().isEmpty()) {
 
@@ -62,10 +56,6 @@ public class SvEditTurnos extends HttpServlet {
             response.sendRedirect("editarTurnos.jsp?error=campos_vacios");
             return;
         }
-
-        // . Una vez validados, conviértelos a int con seguridad
-        int idPaciente = Integer.parseInt(idPacienteStr);
-        int idOdontologo = Integer.parseInt(idOdontologoStr);
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date fechaTurno = null;
@@ -77,8 +67,6 @@ public class SvEditTurnos extends HttpServlet {
         }
 
         Turno tur = (Turno) request.getSession().getAttribute("turnoEditar");
-        //tur.setPacien(pacien);
-        //tur.setOdonto(odonto);
         tur.setFecha_turno(fechaTurno);
         tur.setHora_turno(horaTurno);
         tur.setAfeccion(afeccion);

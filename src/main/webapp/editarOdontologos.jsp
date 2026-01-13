@@ -63,21 +63,81 @@
                    placeholder="Especialidad" value="<%=odon.getEspecialidad()%>" required="">
         </div> 
         <!-- Sector de Horario -->
-        <div class="col-sm-6 mb-3">
-            <label for="dniodon">Inicio de Horario</label> 
-            <input type="time" class="form-control form-control-user" id="inicioHor" name="inicioHorOdon"
-                   placeholder="Inicio de Horario" value="<%= hor.getHorario_inicio()%>" required="">
+        <div class="row px-3">
+            <div class="col-sm-6 mb-3">
+                <label for="inicioHorOdon">Inicio de Horario</label> 
+                <select class="form-control" id="inicioHor" name="inicioHorOdon" required>
+                </select>
+            </div>
+            <div class="col-sm-6 mb-3">
+                <label for="finHorOdon">Fin de Horario</label>
+                <select class="form-control" id="finHor" name="finHorOdon" required>
+                </select>
+            </div> 
         </div>
-        <div class="col-sm-6 mb-3">
-            <label for="dniodon">Fin de Horario</label>
-            <input type="time" class="form-control form-control-user" id="finHor" name="finHorOdon"
-                   placeholder="Fin de Horario" value="<%= hor.getHorario_fin()%>" required="">
-        </div> 
     </div>
 
     <button class="btn btn-primary btn-user btn-block" type="submit"> <!-- solo agregue el type="submit" -->
         Editar Odontólogo
     </button>
 </form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const selectInicio = document.getElementById('inicioHor');
+        const selectFin = document.getElementById('finHor');
+
+        // Obtenemos los valores que ya tiene el odontólogo (limpiando segundos si existen)
+                           const valorActualInicio = "<%= hor.getHorario_inicio()%>".substring(0, 5);
+                           const valorActualFin = "<%= hor.getHorario_fin()%>".substring(0, 5);
+
+        const horaMin = 7;  // 07:00 AM
+        const horaMax = 22; // 10:00 PM
+
+        function generarOpciones() {
+            selectInicio.innerHTML = "";
+            selectFin.innerHTML = "";
+
+            for (let h = horaMin; h <= horaMax; h++) {
+                ["00", "30"].forEach(min => {
+                    if (h === horaMax && min === "30")
+                        return;
+
+                    let horaLabel = h.toString().padStart(2, '0') + ":" + min;
+
+                    // Lógica Inicio
+                    if (h < horaMax) {
+                        let optInicio = new Option(horaLabel, horaLabel);
+                        if (horaLabel === valorActualInicio)
+                            optInicio.selected = true;
+                        selectInicio.add(optInicio);
+                    }
+
+                    // Lógica Fin
+                    if (!(h === horaMin && min === "00")) {
+                        let optFin = new Option(horaLabel, horaLabel);
+                        if (horaLabel === valorActualFin)
+                            optFin.selected = true;
+                        selectFin.add(optFin);
+                    }
+                });
+            }
+        }
+
+        generarOpciones();
+
+        // Validación para evitar que el fin sea menor al inicio
+        const validarHorarios = () => {
+            if (selectFin.value <= selectInicio.value) {
+                selectFin.setCustomValidity("La hora de fin debe ser posterior al inicio");
+            } else {
+                selectFin.setCustomValidity("");
+            }
+        };
+
+        selectInicio.addEventListener('change', validarHorarios);
+        selectFin.addEventListener('change', validarHorarios);
+    });
+</script>
 
 <%@include file="components/bodyfinal.jsp" %>
