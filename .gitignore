@@ -1,2 +1,4 @@
 # Ignorar el directorio target
 target/
+nb-configuration.xml
+nbactions.xml
