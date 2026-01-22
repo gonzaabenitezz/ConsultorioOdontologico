@@ -8,127 +8,89 @@
 <%@include file="components/header.jsp" %>
 <%@include file="components/bodyprimeraparte.jsp" %>
 
-<!-- Begin Page Content -->
 <div class="container-fluid">
 
-    <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">Ver Turnos</h1>
-    <p class="mb-4">A continuación podrá visualizar la lista completa de turnos.</p>
+    <p class="mb-4">Gestión de citas médicas. Utilice el buscador para filtrar por paciente, odontólogo o fecha.</p>
 
-    <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Turnos</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Lista de Turnos</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
+                <table class="table table-bordered table-hover align-middle" id="dataTable" width="100%" cellspacing="0">
+                    <thead class="thead-dark text-center">
                         <tr>
-                            <th>Id</th>
-                            <th>Id Pac</th>
-                            <th>Dni Pac</th>
-                            <th>Nom Pac</th>
-                            <th>Apell Pac</th>
-                            <th>Id Odon</th>
-                            <th>Dni Odon</th>
-                            <th>Nom Odon</th>
-                            <th>Apell Odon</th>
-                            <th>Fecha Turno</th>
-                            <th>Hora Turno</th>
-                            <th>Afeccion</th>
-
-                            <th style="width:210px">Acción</th>
+                            <th>ID</th>
+                            <th class="bg-primary text-white">Paciente</th>
+                            <th class="bg-primary text-white">DNI Pac</th>
+                            <th class="bg-info text-white">Odontólogo</th>
+                            <th class="bg-info text-white">DNI Odon</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Afección</th>
+                            <th style="width: 100px;">Acciones</th>
                         </tr>
                     </thead>
-                    <tfoot>
-                        <tr>
-                            <th>Id</th>
-                            <th>Id Pac</th>
-                            <th>Dni Pac</th>
-                            <th>Nom Pac</th>
-                            <th>Apell Pac</th>
-                            <th>Id Odon</th>
-                            <th>Dni Odon</th>
-                            <th>Nom Odon</th>
-                            <th>Apell Odon</th>
-                            <th>Fecha Turno</th>
-                            <th>Hora Turno</th>
-                            <th>Afeccion</th>
-                            <th style="width:210px">Acción</th>
-                        </tr>
-                    </tfoot>
-
-                    <%                        List<Turno> listaTurnos = (List) request.getSession().getAttribute("listaTurnos"); //video 13 min 45.00. getSession va a traer la sesion, getAttribute va a traer de la sesion la listaUsuarios, (List) va a hacer el casteo para que se transforme en una lista y lo va a guardar en la lista listaUsuarios
-                    %>
-                    <%SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");%> <!-- formatear fecha, asigna el tipo de date que debe ser -->
-
-                    <%
-                        List<Odontologo> listaOdontologos = (List) request.getSession().getAttribute("listaOdontologos"); //video 13 min 45.00. getSession va a traer la sesion, getAttribute va a traer de la sesion la listaUsuarios, (List) va a hacer el casteo para que se transforme en una lista y lo va a guardar en la lista listaUsuarios
-                    %>
-
-                    <%
-                        List<Paciente> listaPacientes = (List) request.getSession().getAttribute("listaPacientes"); //video 13 min 45.00. getSession va a traer la sesion, getAttribute va a traer de la sesion la listaUsuarios, (List) va a hacer el casteo para que se transforme en una lista y lo va a guardar en la lista listaUsuarios
-                    %>
-
-
                     <tbody>
-                        <%for (Turno tur : listaTurnos) {%>
-                        <% Paciente pac = tur.getPacien();%>
-                        <% Odontologo odon = tur.getOdonto(); %>
-                        <%String fechaFormateada = formatter.format(tur.getFecha_turno());%> <!-- formatear fecha -->
+                        <%
+                            List<Turno> listaTurnos = (List) request.getSession().getAttribute("listaTurnos");
+                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
+                            for (Turno tur : listaTurnos) {
+                                Paciente pac = tur.getPacien();
+                                Odontologo odon = tur.getOdonto();
+                                String fechaFormateada = (tur.getFecha_turno() != null) ? formatter.format(tur.getFecha_turno()) : "N/A";
+                        %>
+                        <tr class="text-dark">
+                            <td class="text-center font-weight-bold"><%= tur.getId_turno()%></td>
 
-                        <tr>
-                            <td id="id_tur<%= tur.getId_turno()%>"> <%= tur.getId_turno()%> </td>  <!--Esta parte del codigo <,%= %,> lo que hace es traer el valor exacto de una variable sin que tengamos que especificar algo mas de codigo --> 
-                            <td idpaciente="id_pac<%= (pac != null) ? pac.getId(): "N/A"%>"> <%= (pac != null) ? pac.getId(): "N/A"%></td>
-                            <td><%= pac.getDni()%></td>
-                            <td><%= pac.getNombre()%></td>
-                            <td><%= pac.getApellido()%></td>
-
-                            <td idodontologo="id_odon<%= (odon != null) ? odon.getId(): "N/A"%>"> <%= (odon != null) ? odon.getId(): "N/A"%></td>
-                            <td><%= odon.getDni()%></td>
-                            <td><%= odon.getNombre()%></td>
-                            <td><%= odon.getApellido()%></td>
-
-                            <td> <%= fechaFormateada%> </td> <!-- Si la fecha u otro dato que se formaté o se le realiza un cambio puede tener un error -->                              
-
-                            
-                            <td> <%= tur.getHora_turno()%> </td> 
-                            <td> <%= tur.getAfeccion()%> </td> 
-
-
-
-                            <td style="display: flex; width: 230px">
-                                <form name="eliminar" action="SvElimTurnos" method="POST"> <!--esto es para mandar el codigo al servlet-->
-                                    <button type="submit" class="btn btn-primary btn-user btn-block" style="background-color: red; margin-right:5px;">
-                                        <i class="fas fa-trash-alt"></i> Eliminar
-                                    </button>
-                                    <input type="hidden" name="id" value="<%=tur.getId_turno()%>"> <!-- esto se conecta con el POST de SvelimPacientes para poder eliminar al paciente con esta id-->
-                                    <!-- si idresp es null devuelve un valor vacio, si no, devuelve la id del responsable. E<!--sto se conecta con el POST de SvelimPacientes para poder eliminar al responsable con esta id -->
-                                </form>
-                                <form name="editar" action="SvEditTurnos" method="GET"> <!--esto es para mandar el codigo al servlet-->
-                                    <button type="submit" class="btn btn-primary btn-user btn-block" style="margin-left: 5px">
-                                        <i class="fas fa-pencil-alt"></i> Editar
-                                    </button>
-                                    <input type="hidden" name="id" value="<%=tur.getId_turno()%>">
-                                    <input type="hidden" name="idpaciente" value="<%= (pac != null) ? pac.getId(): ""%>"> 
-                                    <input type="hidden" name="idodontologo" value="<%= (odon != null) ? odon.getId(): ""%>">
-                                </form>
+                            <td>
+                                <div class="small font-weight-bold"><%= (pac != null) ? pac.getNombre() + " " + pac.getApellido() : "N/A"%></div>
+                                <div class="text-muted small">ID: <%= (pac != null) ? pac.getId() : "-"%></div>
                             </td>
-                        </tr>                        
-                        <%}%>
+                            <td class="text-center"><%= (pac != null) ? pac.getDni() : "-"%></td>
+
+                            <td>
+                                <div class="small font-weight-bold"><%= (odon != null) ? odon.getNombre() + " " + odon.getApellido() : "N/A"%></div>
+                                <div class="text-muted small">ID: <%= (odon != null) ? odon.getId() : "-"%></div>
+                            </td>
+                            <td class="text-center"><%= (odon != null) ? odon.getDni() : "-"%></td>
+
+                            <td class="text-center"><%= fechaFormateada%></td>
+                            <td class="text-center">
+                                <span class="badge badge-light border shadow-sm">
+                                    <i class="far fa-clock text-primary"></i> <%= tur.getHora_turno()%>
+                                </span>
+                            </td>
+                            <td><small><%= tur.getAfeccion()%></small></td>
+
+                            <td>
+                                <div class="d-flex justify-content-center">
+                                    <form action="SvEditTurnos" method="GET" class="mr-1">
+                                        <input type="hidden" name="id" value="<%=tur.getId_turno()%>">
+                                        <input type="hidden" name="idpaciente" value="<%= (pac != null) ? pac.getId() : ""%>"> 
+                                        <input type="hidden" name="idodontologo" value="<%= (odon != null) ? odon.getId() : ""%>">
+                                        <button type="submit" class="btn btn-info btn-sm shadow-sm" title="Editar">
+                                            <i class="fas fa-pencil-alt"></i>
+                                        </button>
+                                    </form>
+                                    <form action="SvElimTurnos" method="POST">
+                                        <input type="hidden" name="id" value="<%=tur.getId_turno()%>">
+                                        <button type="submit" class="btn btn-danger btn-sm shadow-sm" title="Eliminar">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        <% }%>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-
 </div>
-<!-- /.container-fluid -->
-
-</div>
-<!-- End of Main Content -->
-
 
 <%@include file="components/bodyfinal.jsp" %>

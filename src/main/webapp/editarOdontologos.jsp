@@ -6,93 +6,116 @@
 <%@include file="components/header.jsp" %>
 <%@include file="components/bodyprimeraparte.jsp" %>
 
-<h1>Editar Odontólogos</h1>
-<p>Este es el apartado para editar a los odontologos del sistema.</p>
+<div class="container-fluid">
 
-<%-- Bloque para campos vacíos --%>
-<% if ("campos_vacios".equals(request.getParameter("error"))) { %>
-<div class="alert alert-danger">
-    Por favor, no dejar ningún campo vacío para continuar. 
-</div>
-<% } %>
-
-<% Odontologo odon = (Odontologo) request.getSession().getAttribute("odonEditar"); %>
-<%Horario hor = (Horario) request.getSession().getAttribute("horEditar"); %>
-
-
-<% SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");%>
-<% String fechaFormateada = formatter.format(odon.getFecha_nac());%>
-
-
-<p>Odontologo</p>
-<form class="user" action="SvEditOdontologos" method="POST">
-    <div class="form-group col">
-        <div class="col-sm-6 mb-3">
-            <label for="dniodon">DNI Odontologo</label>
-            <input type="text" class="form-control form-control-user" id="dni" name="dniOdon" 
-                   placeholder="DNI" value="<%=odon.getDni()%>" required=""> 
-        </div>
-        <div class="col-sm-6 mb-3">
-            <label for="dniodon">Nombre Odontologo</label>
-            <input type="text" class="form-control form-control-user" id="nombre" name="nombreOdon"
-                   placeholder="Nombre" value="<%=odon.getNombre()%>" required="">
-        </div>  
-        <div class="col-sm-6 mb-3">
-            <label for="dniodon">Apellido Odontologo</label>
-            <input type="text" class="form-control form-control-user" id="apellido" name="apellidoOdon"
-                   placeholder="Apellido" value="<%=odon.getApellido()%>" required="">
-        </div>
-        <div class="col-sm-6 mb-3">
-            <label for="dniodon">Teléfono Odontologo</label>
-            <input type="text" class="form-control form-control-user" id="telefono" name="telefonoOdon"
-                   placeholder="Teléfono" value="<%=odon.getTelefono()%>" required="">
-        </div>  
-        <div class="col-sm-6 mb-3">
-            <label for="dniodon">Dirección Odontologo</label>
-            <input type="text" class="form-control form-control-user" id="direccion" name="direccionOdon"
-                   placeholder="Dirección" value="<%=odon.getDireccion()%>" required="">
-        </div> 
-        <div class="col-sm-6 mb-3">
-            <label for="dniodon">Fecha de Nacimiento Odontologo</label> 
-            <input type="date" class="form-control form-control-user" id="fechaNac" name="fechaNacOdon"
-                   placeholder="Fecha Nacimiento" value="<%=fechaFormateada%>" required="">
-        </div>
-        <div class="col-sm-6 mb-3">
-            <label for="dniodon">Especialidad Odontologo</label>
-            <input type="text" class="form-control form-control-user" id="especialidad" name="especialidadOdon"
-                   placeholder="Especialidad" value="<%=odon.getEspecialidad()%>" required="">
-        </div> 
-        <!-- Sector de Horario -->
-        <div class="row px-3">
-            <div class="col-sm-6 mb-3">
-                <label for="inicioHorOdon">Inicio de Horario</label> 
-                <select class="form-control" id="inicioHor" name="inicioHorOdon" required>
-                </select>
-            </div>
-            <div class="col-sm-6 mb-3">
-                <label for="finHorOdon">Fin de Horario</label>
-                <select class="form-control" id="finHor" name="finHorOdon" required>
-                </select>
-            </div> 
-        </div>
+    <div class="mb-4">
+        <h1 class="h3 mb-2 text-gray-800 font-weight-bold">Editar Odontólogo</h1>
+        <p class="text-muted">Modifique la información personal o el rango horario del profesional seleccionado.</p>
     </div>
 
-    <button class="btn btn-primary btn-user btn-block" type="submit"> <!-- solo agregue el type="submit" -->
-        Editar Odontólogo
-    </button>
-</form>
+    <%-- Bloque para campos vacíos --%>
+    <% if ("campos_vacios".equals(request.getParameter("error"))) { %>
+    <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <strong>¡Atención!</strong> Por favor, no dejar ningún campo vacío para continuar.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <% } %>
+
+    <%-- Extracción de datos del backend --%>
+    <% Odontologo odon = (Odontologo) request.getSession().getAttribute("odonEditar"); %>
+    <% Horario hor = (Horario) request.getSession().getAttribute("horEditar"); %>
+    <% SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); %>
+    <% String fechaFormateada = formatter.format(odon.getFecha_nac());%>
+
+    <form class="user" action="SvEditOdontologos" method="POST">
+
+        <div class="text-center mb-3">
+            <h4 class="font-weight-bold text-primary text-uppercase">Datos del Odontólogo</h4>
+            <hr class="mx-auto" style="width: 50px; border: 2px solid; opacity: 1;">
+        </div>
+
+        <div class="card shadow mb-4 border-left-primary">
+            <div class="card-header py-3 bg-light">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-user-md me-1"></i> Datos Personales y Especialidad
+                </h6>
+            </div>
+            <div class="card-body py-4">
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label font-weight-bold">Nombre:</label>
+                        <input type="text" class="form-control" name="nombreOdon" value="<%=odon.getNombre()%>" required>
+                    </div> 
+                    <div class="col-md-4"> 
+                        <label class="form-label font-weight-bold">Apellido:</label>
+                        <input type="text" class="form-control" name="apellidoOdon" value="<%=odon.getApellido()%>" required>
+                    </div>
+                    <div class="col-md-4"> 
+                        <label class="form-label font-weight-bold">DNI:</label>
+                        <input type="text" class="form-control" name="dniOdon" value="<%=odon.getDni()%>" required>
+                    </div>
+                </div> 
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="form-label font-weight-bold">Teléfono:</label>
+                        <input type="text" class="form-control" name="telefonoOdon" value="<%=odon.getTelefono()%>" required>
+                    </div> 
+                    <div class="col-md-4"> 
+                        <label class="form-label font-weight-bold">Dirección:</label>
+                        <input type="text" class="form-control" name="direccionOdon" value="<%=odon.getDireccion()%>" required>
+                    </div>
+                    <div class="col-md-4"> 
+                        <label class="form-label font-weight-bold">Fecha de Nacimiento:</label> 
+                        <input type="date" class="form-control" name="fechaNacOdon" value="<%=fechaFormateada%>" required>
+                    </div>
+                </div> 
+
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <label class="form-label font-weight-bold text-primary"><i class="far fa-clock"></i> Inicio Horario:</label> 
+                        <select class="form-control custom-select" id="inicioHor" name="inicioHorOdon" required></select>
+                    </div> 
+                    <div class="col-md-4"> 
+                        <label class="form-label font-weight-bold text-primary"><i class="fas fa-history"></i> Fin Horario:</label>
+                        <select class="form-control custom-select" id="finHor" name="finHorOdon" required></select>
+                    </div>
+                    <div class="col-md-4"> 
+                        <label class="form-label font-weight-bold">Especialidad:</label>
+                        <input type="text" class="form-control" name="especialidadOdon" value="<%=odon.getEspecialidad()%>" required>
+                    </div>
+                </div> 
+
+                <hr>
+
+                <div class="text-right mt-4">
+                    <a href="SvOdontologos" class="btn btn-secondary btn-lg px-4 mr-2" style="border-radius: 10px;">
+                        <i class="fas fa-arrow-left me-1"></i> Cancelar
+                    </a>
+                    <button class="btn btn-primary btn-lg shadow-sm px-5" type="submit" style="border-radius: 10px;"> 
+                        <i class="fas fa-save me-2"></i> Guardar Cambios
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const selectInicio = document.getElementById('inicioHor');
         const selectFin = document.getElementById('finHor');
 
-        // Obtenemos los valores que ya tiene el odontólogo (limpiando segundos si existen)
-                           const valorActualInicio = "<%= hor.getHorario_inicio()%>".substring(0, 5);
-                           const valorActualFin = "<%= hor.getHorario_fin()%>".substring(0, 5);
+        // Valores actuales del backend
+        const valorActualInicio = "<%= hor.getHorario_inicio()%>".substring(0, 5);
+        const valorActualFin = "<%= hor.getHorario_fin()%>".substring(0, 5);
 
-        const horaMin = 7;  // 07:00 AM
-        const horaMax = 22; // 10:00 PM
+        const horaMin = 7;
+        const horaMax = 22;
 
         function generarOpciones() {
             selectInicio.innerHTML = "";
@@ -102,7 +125,6 @@
                 ["00", "30"].forEach(min => {
                     if (h === horaMax && min === "30")
                         return;
-
                     let horaLabel = h.toString().padStart(2, '0') + ":" + min;
 
                     // Lógica Inicio
@@ -126,7 +148,6 @@
 
         generarOpciones();
 
-        // Validación para evitar que el fin sea menor al inicio
         const validarHorarios = () => {
             if (selectFin.value <= selectInicio.value) {
                 selectFin.setCustomValidity("La hora de fin debe ser posterior al inicio");
