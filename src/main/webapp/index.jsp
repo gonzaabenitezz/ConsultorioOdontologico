@@ -8,7 +8,7 @@
     <div class="text-center my-4">
         <img src="https://penndentalmedicine.org/wp-content/uploads/2022/11/shutterstock_288954491-scaled-1024x683.jpg" 
              class="img-fluid rounded shadow" 
-             style="max-width: 70%;" 
+             style="max-width: 60%;" 
              alt="Clínica">
     </div>
 
