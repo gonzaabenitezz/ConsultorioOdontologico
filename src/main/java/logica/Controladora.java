@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import persistencia.ControladoraPersistencia;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class Controladora {
 
     ControladoraPersistencia controlPersis = new ControladoraPersistencia();
 
     public int crearUsuario(String nombreUsuario, String contrasenia, String rol) {
+
+        String contraHasheada = BCrypt.hashpw(contrasenia, BCrypt.gensalt());
+
         Usuario usu = new Usuario(); // se deja vacio los corchetes para que se generen la id's automaticamente ya que no las tengo
         usu.setNombreUsuario(nombreUsuario);
         usu.setContrasenia(contrasenia);
@@ -32,7 +36,16 @@ public class Controladora {
         return controlPersis.traerUsuario(id);
     }
 
-    public void editarUsuario(Usuario usu) {
+    public void editarUsuario(Usuario usu, String contrasenia) {
+
+        if (contrasenia != null && !contrasenia.trim().isEmpty()) {
+            String contraHasheada = BCrypt.hashpw(contrasenia, BCrypt.gensalt());
+            usu.setContrasenia(contraHasheada);
+        } else {
+            Usuario usuAnterior = controlPersis.traerUsuario(usu.getId_usuario());
+            usu.setContrasenia(usuAnterior.getContrasenia());
+        }
+
         controlPersis.editarUsuario(usu);
     }
 
@@ -41,9 +54,10 @@ public class Controladora {
         List<Usuario> listaUsuarios = controlPersis.getUsuarios();
 
         for (Usuario usu : listaUsuarios) {
-            if (usu.getNombreUsuario().equals(usuario) && 
-                usu.getContrasenia().equals(contrasenia)) {
+            if (usu.getNombreUsuario().equals(usuario)) {
+                if (BCrypt.checkpw(contrasenia, usu.getContrasenia())) {
                     return usu; // Devuelve el usuario válido    
+                }
             }
         }
         return null;
@@ -206,18 +220,18 @@ public class Controladora {
         Turno tur = new Turno();
         Paciente pac = traerPaciente(idPaciente);
         Odontologo odon = traerOdontologo(idOdontologo);
-        
-        tur.setPacien(pac);        
+
+        tur.setPacien(pac);
         tur.setOdonto(odon);
         tur.setFecha_turno(fechaTurno);
         tur.setHora_turno(horaTurno);
         tur.setAfeccion(afeccion);
-               
+
         controlPersis.crearTurno(tur);
     }
 
     public List<Turno> getTurnos() {
-        
+
         return controlPersis.getTurnos();
 
     }
@@ -227,7 +241,7 @@ public class Controladora {
     }
 
     public Turno traerTurno(int id) {
-       return controlPersis.traerTurno(id);
+        return controlPersis.traerTurno(id);
     }
 
     public void editarTurno(Turno tur) {
