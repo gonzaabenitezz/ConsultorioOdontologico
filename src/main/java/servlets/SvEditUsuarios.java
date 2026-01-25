@@ -1,7 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -42,9 +41,7 @@ public class SvEditUsuarios extends HttpServlet {
         String contrasenia = request.getParameter("contrasenia");
 
         // Verificación de nulidad y contenido vacío
-        if (nombreUsu == null || nombreUsu.trim().isEmpty()
-                || contrasenia == null || contrasenia.trim().isEmpty()) {
-
+        if (nombreUsu == null || nombreUsu.trim().isEmpty()) {
             // Si falta algo, redirige con un mensaje de advertencia
             response.sendRedirect("editarUsuarios.jsp?error=campos_vacios");
             return;
@@ -52,8 +49,7 @@ public class SvEditUsuarios extends HttpServlet {
 
         Usuario usu = (Usuario) request.getSession().getAttribute("usuEditar");
         usu.setNombreUsuario(nombreUsu);
-        usu.setContrasenia(contrasenia);
-        control.editarUsuario(usu);
+        control.editarUsuario(usu, contrasenia);
 
         response.sendRedirect("SvUsuarios");
     }

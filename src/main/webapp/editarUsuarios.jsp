@@ -68,7 +68,7 @@
                                 <span class="input-group-text bg-white border-right-0"><i class="fas fa-lock text-gray-400"></i></span>
                             </div>
                             <input type="password" class="form-control border-left-0" name="contrasenia" 
-                                   value="<%=usu.getContrasenia()%>" required>
+                                   placeholder="Dejar en blanco para no cambiar">
                         </div>
                     </div>
 
