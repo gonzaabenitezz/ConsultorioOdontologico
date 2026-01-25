@@ -17,16 +17,24 @@ Este es un proyecto de **desarrollo personal y carácter práctico**, creado con
 
 ## Capturas del Sistema
 
-| Pantalla de Login | Panel Principal | Base de Datos (phpMyAdmin) |
+| **Pantalla de Login** | **Pantalla Principal** | **Pantalla Vista de Odontologo** |
 | :---: | :---: | :---: |
-| ![Login](screenshots/login.png) | ![Principal](screenshots/pagina_principal.png) | ![BD](screenshots/base_de_datos.png) |
+| ![Login](screenshots/login.png) |![Principal](screenshots/pagina_principal.png) | ![VistaOdonto](screenshots/vistaOdontologo.png) |
+| **Pantalla Vista de Paciente** | **Pantalla Alta Turnos 1** | **Pantalla Alta Turnos 2** |
+| ![VistaPaciente](screenshots/vistaPaciente.png) | ![AltaTurno1](screenshots/altaTurno_1.png) | ![AltaTurno2](screenshots/altaTurno_2.png) |
 
+| **Base de Datos (phpMyAdmin)** | 
+| :---: |
+| ![BD](screenshots/base_de_datos.png) |
 ---
 
 ## Funcionalidades Principales
 
 - **Autenticación segura**  
-  Acceso mediante usuario y contraseña.
+  - Acceso mediante usuario y contraseña.
+
+- **Seguridad y Encriptación BCrypt**
+  - Las contraseñas no se almacenan en texto plano; se utiliza el algoritmo BCrypt para generar hashes seguros, garantizando la protección de las credenciales incluso ante accesos no autorizados a la base de datos.
 
 - **Protección de rutas y seguridad:**
   - Control de acceso por URL: Si un usuario intenta acceder manualmente a una página que no corresponde a su rol (vía link o historial), el sistema bloquea el acceso y lo redirige, garantizando la integridad de los módulos.
@@ -100,10 +108,8 @@ VALUES (NULL, 'admin123', 'admin', 'admin');
 
 ### Mejoras Pendientes
 
-- [ ] **Encriptación de contraseñas:** Implementar seguridad con BCrypt.
 - [ ] **Filtro de turnos:** Refinar la lógica para que cada odontólogo visualice únicamente su agenda personal.
 - [ ] **Perfil de usuario:** Creación de un panel para que el usuario gestione sus datos personales.
-- [ ] **Optimización de UI/UX:** Mejorar la interfaz para que sea más moderna y ágil. Optimizar formularios y tablas para evitar desplazamientos (scroll) innecesarios y facilitar la carga de datos en una sola vista.
       
 ---
 
