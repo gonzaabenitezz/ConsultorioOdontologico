@@ -87,11 +87,12 @@ git clone https://github.com/gonzaabenitezz/ConsultorioOdontologico.git
 * Haz clic derecho sobre el proyecto y selecciona **Run**.
 
 ### 4️⃣ Primer Acceso (Usuario Administrador)
-Al ejecutar el proyecto por primera vez, **JPA** creará automáticamente todas las tablas. Para ingresar, debes crear manualmente un usuario administrador en tu consola de **phpMyAdmin**:
+Al ejecutar el proyecto por primera vez, **JPA** creará automáticamente todas las tablas. Dado que el sistema utiliza **BCrypt**, para el primer ingreso debes insertar manualmente un usuario con la contraseña ya encriptada en tu consola de **phpMyAdmin**:
 
 ```sql
+/* La contraseña insertada es 'admin123' encriptada con BCrypt */
 INSERT INTO usuario (ID_USUARIO, CONTRASENIA, NOMBREUSUARIO, ROL) 
-VALUES (NULL, 'admin123', 'admin', 'admin');
+VALUES (NULL, '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgNIvDg2V58BRVnLlh6euyYhLwS.', 'admin', 'admin');
 ```
 
 ---
