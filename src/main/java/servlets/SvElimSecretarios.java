@@ -30,7 +30,7 @@ public class SvElimSecretarios extends HttpServlet {
         
         int id = Integer.parseInt(request.getParameter("id"));
         
-        control.borrarSecretario(id);
+        control.borrarSecretarioIntegral(id);
         response.sendRedirect("SvSecretarios");
         
     }

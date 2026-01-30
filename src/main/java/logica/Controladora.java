@@ -2,6 +2,7 @@ package logica;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import persistencia.ControladoraPersistencia;
 import org.mindrot.jbcrypt.BCrypt;
@@ -16,7 +17,7 @@ public class Controladora {
 
         Usuario usu = new Usuario(); // se deja vacio los corchetes para que se generen la id's automaticamente ya que no las tengo
         usu.setNombreUsuario(nombreUsuario);
-        usu.setContrasenia(contrasenia);
+        usu.setContrasenia(contraHasheada);
         usu.setRol(rol);
 
         controlPersis.crearUsuario(usu);
@@ -61,6 +62,37 @@ public class Controladora {
             }
         }
         return null;
+    }
+
+    public void borrarUsuarioIntegrado(int id) {
+
+        Usuario usu = controlPersis.traerUsuario(id);
+        String rolUsu = usu.getRol();
+
+        switch (rolUsu) {
+            case "odonto":
+                List<Odontologo> listaOdontologo = getOdontologos();
+                for (Odontologo odon : listaOdontologo) {
+                    if (odon.getUnUsuario() != null && odon.getUnUsuario().getId_usuario() == id) {
+                        this.borrarOdontologoIntegral(odon.getId());
+                        return;
+                    }
+                }   break;
+            case "secre":
+                List<Secretario> listaSecretario = getSecretarios();
+                for (Secretario secre : listaSecretario) {
+                    if (secre.getUnUsuario() != null && secre.getUnUsuario().getId_usuario() == id) {
+                        this.borrarSecretarioIntegral(secre.getId());
+                        return;
+                    }
+                }   break;
+            case "admin":
+                this.borrarUsuario(id);
+                break;
+            default:
+                break;
+        }
+
     }
 
     public void crearPacienteYResponsable(String dni, String nombre, String apellido, String telefono, String direccion,
@@ -123,6 +155,27 @@ public class Controladora {
         controlPersis.borrarResponsable(idresp);
     }
 
+    public void borrarPacienteResponsableIntegral(int id) {
+
+        controlPersis.borrarTurnoPorPaciente(id);
+
+        Paciente pas = controlPersis.traerPaciente(id);
+
+        if (pas != null) {
+            int idResp = (pas.getUnResponsable() != null) ? pas.getUnResponsable().getId() : -1;
+
+            controlPersis.borrarPaciente(id);
+
+            if (idResp != -1) {
+                controlPersis.borrarResponsable(idResp);
+            }
+        }
+    }
+
+    public void borrarTurnoPorPaciente(int id) {
+        controlPersis.borrarTurnoPorPaciente(id);
+    }
+
     public void crearOdontologo(String dniOdon, String nombreOdon, String apellidoOdon,
             String telefonoOdon, String direccionOdon, Date fechaNacOdon, String especialidadOdon, int unUsuario, int unHorario) {
 
@@ -158,6 +211,33 @@ public class Controladora {
         controlPersis.editarOdontologo(odon);
     }
 
+    public void borrarOdontologoIntegral(int id) {
+
+        controlPersis.borrarTurnosPorOdontologo(id);
+
+        Odontologo odon = controlPersis.traerOdontologo(id);
+
+        if (odon != null) {
+            int idUsuario = (odon.getUnUsuario() != null) ? odon.getUnUsuario().getId_usuario() : -1;
+            int idHorario = (odon.getUnHorario() != null) ? odon.getUnHorario().getId_horario() : -1;
+
+            controlPersis.borrarOdontologo(id);
+
+            if (idUsuario != -1) {
+                controlPersis.borrarUsuario(idUsuario);
+            }
+            if (idHorario != -1) {
+                controlPersis.borrarHorario(idHorario);
+            }
+        }
+    }
+
+    public void borrarTurnosPorOdontologo(int id) {
+        // 1. Ejecutamos el borrado masivo que pusiste arriba
+        controlPersis.borrarTurnosPorOdontologo(id);
+
+    }
+
     public void crearSecretario(String dni, String nombre, String apellido, String telefono, String direccion, Date fechaNac, String sector, int unUsuario) {
         Secretario secre = new Secretario();
 
@@ -188,6 +268,20 @@ public class Controladora {
 
     public void editarSecretario(Secretario secre) {
         controlPersis.editarSecretario(secre);
+    }
+
+    public void borrarSecretarioIntegral(int id) {
+        Secretario secre = controlPersis.traerSecretario(id);
+
+        if (secre != null) {
+            int idUsuario = (secre.getUnUsuario() != null) ? secre.getUnUsuario().getId_usuario() : -1;
+
+            controlPersis.borrarSecretario(id);
+
+            if (idUsuario != -1) {
+                controlPersis.borrarUsuario(idUsuario);
+            }
+        }
     }
 
     public int crearHorario(String inicioHorarioOdon, String finHorarioOdon) {

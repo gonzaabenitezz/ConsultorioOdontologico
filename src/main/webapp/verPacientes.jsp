@@ -40,7 +40,7 @@
                             for (Paciente pac : listaPacientes) {
                                 Responsable resp = pac.getUnResponsable();
                                 String targetId = "respData" + pac.getId(); // ID único para el colapso
-%>
+                        %>
                         <tr>
                             <td><%= pac.getId()%></td>
                             <td><strong><%= pac.getApellido()%>, <%= pac.getNombre()%></strong></td>
