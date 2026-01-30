@@ -4,6 +4,8 @@ package persistencia;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import logica.Horario;
 import logica.Odontologo;
 import logica.Paciente;
@@ -30,7 +32,7 @@ public class ControladoraPersistencia {
     public int crearUsuario(Usuario usu) {
         usuJPA.create(usu);
         return usu.getId_usuario();
-        
+
     }
 
     public List<Usuario> getUsuarios() {
@@ -195,15 +197,15 @@ public class ControladoraPersistencia {
     }
 
     public void crearTurno(Turno tur) {
-        
+
         turnJPA.create(tur);
-        
+
     }
 
     public List<Turno> getTurnos() {
-    
+
         return turnJPA.findTurnoEntities();
-    
+
     }
 
     public void borrarTurno(int id) {
@@ -226,6 +228,55 @@ public class ControladoraPersistencia {
         }
     }
 
+    public void borrarTurnosPorOdontologo(int id) {
 
+        // Usamos tu instancia existente para obtener el EntityManager
+        EntityManager em = turnJPA.getEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            // Ejecutamos el borrado masivo
+            Query query = em.createQuery("DELETE FROM Turno t WHERE t.odonto.id = :id");
+            query.setParameter("id", id);
+
+            query.executeUpdate();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em != null && em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            System.out.println("Error al borrar turnos masivamente: " + e.getMessage());
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
+        }
+
+    }
+
+    public void borrarTurnoPorPaciente(int id) {
+        
+        // Usamos tu instancia existente para obtener el EntityManager
+        EntityManager em = pacJPA.getEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            // Ejecutamos el borrado masivo
+            Query query = em.createQuery("DELETE FROM Turno t WHERE t.pacien.id = :id");
+            query.setParameter("id", id);
+
+            query.executeUpdate();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            if (em != null && em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            System.out.println("Error al borrar turnos masivamente: " + e.getMessage());
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
+        }
+    }
 
 }

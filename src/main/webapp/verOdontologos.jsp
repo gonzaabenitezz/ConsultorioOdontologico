@@ -71,8 +71,6 @@
                                     </form>
                                     <form action="SvElimOdontologos" method="POST">
                                         <input type="hidden" name="id" value="<%=odon.getId()%>">
-                                        <input type="hidden" name="idusuodonto" value="<%= (usu != null) ? usu.getId_usuario() : ""%>">
-                                        <input type="hidden" name="idhorario" value="<%= (hor != null) ? hor.getId_horario() : ""%>">
                                         <button type="submit" class="btn btn-danger btn-sm shadow-sm">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
