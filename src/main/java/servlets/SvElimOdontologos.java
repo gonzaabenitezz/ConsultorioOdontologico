@@ -33,7 +33,7 @@ public class SvElimOdontologos extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         control.borrarOdontologoIntegral(id);
 
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("SvOdontologos");
     }
 
     @Override
