@@ -73,7 +73,13 @@
                                     <form action="SvElimPacientes" method="POST">
                                         <input type="hidden" name="id" value="<%=pac.getId()%>">
                                         <input type="hidden" name="idresp" value="<%= (resp != null) ? resp.getId() : ""%>">
-                                        <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                                        <button type="button" 
+                                                class="btn btn-danger btn-sm shadow-sm" 
+                                                data-toggle="modal" 
+                                                data-target="#confirmarEliminar" 
+                                                onclick="prepararEliminacion(<%= pac.getId()%>)">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
                                     </form>
                                 </div>
                             </td>
@@ -101,11 +107,46 @@
                         <% } %>
 
                         <% }%>
+
+                        <!-- Vista del Modal -->
+                    <div class="modal fade" id="confirmarEliminar" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header bg-danger text-white">
+                                    <h5 class="modal-title">Confirmar Acción</h5>
+                                    <button type="button" class="close text-white" data-dismiss="modal">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body text-center p-4">
+                                    <h5 class="font-weight-bold mb-3">¿Está seguro de que desea eliminar este registro?</h5>
+                                    <p class="text-muted" style="font-size: 1.1rem;">
+                                        Se borrarán definitivamente: <strong>turnos</strong> e <strong>información completa</strong> del Paciente (y tutor si posee).
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                    <form action="SvElimPacientes" method="POST">
+                                        <input type="hidden" name="id" id="idEliminar">
+                                        <button type="submit" class="btn btn-danger">Sí, Eliminar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    function prepararEliminacion(id) {
+        // Asigna el ID del odontólogo al input oculto del modal
+        document.getElementById('idEliminar').value = id;
+    }
+</script>
 
 <%@include file="components/bodyfinal.jsp" %>
